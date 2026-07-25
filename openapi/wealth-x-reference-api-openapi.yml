@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Wealth-X Connect Dossiers Reference API
+  version: v1
+  description: The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform. It exposes single- and bulk-dossier retrieval, an advanced dossier search (by name, company, geography, net worth, industry, interests, education, philanthropy and relationships) and reference-data lookups (countries, states, industry types, positions). This specification was generated faithfully from the provider's published Postman collection; endpoints, parameters and the authentication model are taken verbatim from that collection. No response schemas are published by the provider, so response bodies are described generically.
+  contact:
+    name: Wealth-X Developer Support
+    url: https://developers.wealthx.com/api/main.html
+  x-apisjson-source: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+  x-provenance: generated from the published Wealth-X API Samples Postman collection
+servers:
+- url: https://connect.wealthx.com/rest/v1
+  description: Wealth-X Connect production API
+security:
+- wealthxUsername: []
+  wealthxPassword: []
+  wealthxApiKey: []
+tags:
+- name: Reference
+  description: Reference / lookup data used to build searches.
+paths:
+  /lastdossierid:
+    get:
+      operationId: getLastDossierId
+      tags:
+      - Reference
+      summary: Get the last (highest) dossier ID
+      description: Return the most recent dossier ID for the given dossier type, used to bound incremental syncs.
+      parameters:
+      - name: dossierType
+        in: query
+        description: Type of dossier (e.g. person, company).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The last dossier ID.
+        '401':
+          description: Missing or invalid authentication headers.
+  /countries:
+    get:
+      operationId: listCountries
+      tags:
+      - Reference
+      summary: List countries
+      description: Return the list of countries and their IDs used in search criteria.
+      responses:
+        '200':
+          description: List of countries.
+        '401':
+          description: Missing or invalid authentication headers.
+  /countries/{countryId}/states:
+    get:
+      operationId: listStates
+      tags:
+      - Reference
+      summary: List states for a country
+      description: Return the list of states/regions and their IDs for a given country (e.g. countryId 1 for the US).
+      parameters:
+      - name: countryId
+        in: path
+        required: true
+        description: Numeric country identifier.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of states.
+        '401':
+          description: Missing or invalid authentication headers.
+  /industrytypes:
+    get:
+      operationId: listIndustryTypes
+      tags:
+      - Reference
+      summary: List industry types
+      description: Return the list of industry types and their IDs used in search criteria.
+      responses:
+        '200':
+          description: List of industry types.
+        '401':
+          description: Missing or invalid authentication headers.
+  /positions:
+    get:
+      operationId: listPositions
+      tags:
+      - Reference
+      summary: List positions
+      description: Return the list of career positions/titles used in search criteria.
+      responses:
+        '200':
+          description: List of positions.
+        '401':
+          description: Missing or invalid authentication headers.
+components:
+  securitySchemes:
+    wealthxUsername:
+      type: apiKey
+      in: header
+      name: username
+      description: Wealth-X account username, supplied as a request header.
+    wealthxPassword:
+      type: apiKey
+      in: header
+      name: password
+      description: Wealth-X account password, supplied as a request header.
+    wealthxApiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Wealth-X API key, supplied as a request header.
