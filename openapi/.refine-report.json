@@ -1,0 +1,18 @@
+{
+  "provider": "wealth-x",
+  "sources": [
+    "wealth-x-dossiers-api-openapi.yml",
+    "wealth-x-reference-api-openapi.yml",
+    "wealth-x-search-api-openapi.yml"
+  ],
+  "outputs": [
+    "wealth-x-dossiers-api-openapi.yml",
+    "wealth-x-reference-api-openapi.yml",
+    "wealth-x-search-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

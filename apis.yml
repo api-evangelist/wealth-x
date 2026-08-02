@@ -1,22 +1,139 @@
 aid: wealth-x
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wealth-x.png
 name: Wealth-X
-description: Wealth-X is a company surfaced as a portfolio company of insight-partners and added to the
-  API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Wealth-X, an Altrata company founded in 2010, provides curated wealth
+  intelligence on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW)
+  individuals and their privately held companies. Its Connect API delivers
+  Wealth-X dossiers — net worth, careers, interests, philanthropy and
+  relationship networks — plus advanced prospect search and bulk/incremental
+  sync directly into a subscriber's CRM or data platform. Wealth-X serves
+  financial services, luxury, nonprofit and education clients for prospect
+  qualification, relationship intelligence and compliance.
 url: https://raw.githubusercontent.com/api-evangelist/wealth-x/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - insight-partners
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-from-public-api
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
-apis: []
+- Wealth Intelligence
+- Data
+- UHNW
+- Prospecting
+- Financial Services
+- CRM
+- People Data
+apis:
+- aid: wealth-x:wealth-x-dossiers-api
+  name: Wealth-X Dossiers API
+  description: Retrieve individual and company wealth-intelligence dossiers.
+  humanURL: https://developers.wealthx.com/api/main.html
+  baseURL: https://connect.wealthx.com/rest/v1
+  tags:
+  - Dossiers
+  properties:
+  - type: OpenAPI
+    url: openapi/wealth-x-dossiers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: APIReference
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: Postman
+    url: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+- aid: wealth-x:wealth-x-reference-api
+  name: Wealth-X Reference API
+  description: Reference / lookup data used to build searches.
+  humanURL: https://developers.wealthx.com/api/main.html
+  baseURL: https://connect.wealthx.com/rest/v1
+  tags:
+  - Reference
+  properties:
+  - type: OpenAPI
+    url: openapi/wealth-x-reference-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: APIReference
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: Postman
+    url: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+- aid: wealth-x:wealth-x-search-api
+  name: Wealth-X Search API
+  description: Advanced search across the Wealth-X database.
+  humanURL: https://developers.wealthx.com/api/main.html
+  baseURL: https://connect.wealthx.com/rest/v1
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/wealth-x-search-api-openapi.yml
+  - type: Documentation
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: APIReference
+    url: https://developers.wealthx.com/docs/api/index.html
+  - type: Postman
+    url: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: DeveloperPortal
+  url: https://developers.wealthx.com/api/main.html
+- type: Documentation
+  url: https://developers.wealthx.com/docs/api/index.html
+- type: APIReference
+  url: https://developers.wealthx.com/docs/api/index.html
+- type: Portal
+  url: https://wealthx.com/products/api
+- type: Support
+  url: https://wealthx.com/contact-us
+- type: PrivacyPolicy
+  url: https://wealthx.com/privacy-policy
+- type: TermsOfService
+  url: https://wealthx.com/terms-of-use
+- type: Postman
+  url: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+- type: DomainSecurity
+  url: security/wealth-x-domain-security.yml
+- type: Authentication
+  url: authentication/wealth-x-authentication.yml
+- type: Conventions
+  url: conventions/wealth-x-conventions.yml
+- type: ErrorCatalog
+  url: errors/wealth-x-problem-types.yml
+- type: DataModel
+  url: data-model/wealth-x-data-model.yml
+- type: Lifecycle
+  url: lifecycle/wealth-x-lifecycle.yml
+- type: Conformance
+  url: conformance/wealth-x-conformance.yml
+- type: MCPServer
+  url: mcp/wealth-x-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/wealth-x-llms.txt
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1

@@ -1,0 +1,59 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/wealth-x-connect-openapi.yml and the published Wealth-X API Samples Postman collection
+description: >-
+  Entity-relationship graph of the Wealth-X Connect API, derived from the
+  generated OpenAPI schemas, the search criteria, and the reference-data
+  endpoints. The Dossier is the central entity; reference entities supply the
+  IDs used to filter it.
+entities:
+  - name: Dossier
+    description: A wealth-intelligence record on a UHNW/VHNW individual or privately held company.
+    primary_key: dossierId
+    variants: [person, company]
+    key_fields: [dossierId, dossierType, netWorth, knownAssociates]
+    endpoints:
+      - GET /dossiers/{dossierId}
+      - GET /alldossiers
+      - POST /dossiers/search/advanced
+  - name: Country
+    description: Country lookup used to build geographic search criteria.
+    primary_key: countryID
+    endpoints: [GET /countries]
+  - name: State
+    description: State/region lookup within a country.
+    primary_key: stateID
+    endpoints: ['GET /countries/{countryId}/states']
+  - name: IndustryType
+    description: Industry classification used in search criteria.
+    endpoints: [GET /industrytypes]
+  - name: Position
+    description: Career position/title used in search criteria.
+    endpoints: [GET /positions]
+relationships:
+  - from: Dossier
+    to: Dossier
+    type: has_many
+    via: knownAssociates
+    notes: A dossier links to other dossiers as known associates / connections (the Wealth-X social-network graph).
+  - from: State
+    to: Country
+    type: belongs_to
+    via: countryId
+  - from: Dossier
+    to: Country
+    type: belongs_to
+    via: countryID
+    notes: Geographic association used for filtering (not necessarily a stored FK).
+  - from: Dossier
+    to: State
+    type: belongs_to
+    via: stateID
+  - from: Dossier
+    to: IndustryType
+    type: belongs_to
+    via: industryType
+  - from: Dossier
+    to: Position
+    type: belongs_to
+    via: position

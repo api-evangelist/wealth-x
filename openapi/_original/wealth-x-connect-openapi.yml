@@ -1,0 +1,348 @@
+openapi: 3.0.3
+info:
+  title: Wealth-X Connect API
+  version: v1
+  description: >-
+    The Wealth-X Connect API delivers Wealth-X wealth-intelligence data —
+    curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth
+    (VHNW) individuals and their privately held companies — directly into a
+    subscriber's CRM or data platform. It exposes single- and bulk-dossier
+    retrieval, an advanced dossier search (by name, company, geography, net
+    worth, industry, interests, education, philanthropy and relationships) and
+    reference-data lookups (countries, states, industry types, positions).
+    This specification was generated faithfully from the provider's published
+    Postman collection; endpoints, parameters and the authentication model are
+    taken verbatim from that collection. No response schemas are published by
+    the provider, so response bodies are described generically.
+  contact:
+    name: Wealth-X Developer Support
+    url: https://developers.wealthx.com/api/main.html
+  x-apisjson-source: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+  x-provenance: generated from the published Wealth-X API Samples Postman collection
+servers:
+  - url: https://connect.wealthx.com/rest/v1
+    description: Wealth-X Connect production API
+security:
+  - wealthxUsername: []
+    wealthxPassword: []
+    wealthxApiKey: []
+tags:
+  - name: Dossiers
+    description: Retrieve individual and company wealth-intelligence dossiers.
+  - name: Search
+    description: Advanced search across the Wealth-X database.
+  - name: Reference
+    description: Reference / lookup data used to build searches.
+paths:
+  /dossiers/{dossierId}:
+    get:
+      operationId: getDossier
+      tags: [Dossiers]
+      summary: Get a single dossier
+      description: >-
+        Retrieve a single Wealth-X dossier by its numeric dossier ID. The
+        response can be shaped with the view parameter (stub vs selective) and
+        narrowed to specific fields.
+      parameters:
+        - name: dossierId
+          in: path
+          required: true
+          description: Numeric identifier of the dossier.
+          schema:
+            type: integer
+        - name: view
+          in: query
+          required: false
+          description: Shape of the returned record.
+          schema:
+            type: string
+            enum: [stub, selective]
+        - name: fields
+          in: query
+          required: false
+          description: >-
+            Comma-separated list of fields to return when view=selective
+            (e.g. netWorth, knownAssociates).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested dossier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dossier'
+        '401':
+          description: Missing or invalid authentication headers.
+        '404':
+          description: No dossier exists for the supplied ID.
+  /alldossiers:
+    get:
+      operationId: getAllDossiers
+      tags: [Dossiers]
+      summary: Bulk-download dossiers
+      description: >-
+        Bulk retrieval of dossiers, selectable by explicit dossier IDs, by
+        index/batch ranges, by net-worth band, or by last-modified window for
+        incremental synchronisation.
+      parameters:
+        - name: dossierIds
+          in: query
+          description: Comma-separated list of dossier IDs to download.
+          schema:
+            type: string
+        - name: dossierType
+          in: query
+          description: Type of dossier (e.g. person, company).
+          schema:
+            type: string
+        - name: view
+          in: query
+          description: Shape of the returned records (stub / selective).
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: Comma-separated list of fields to return.
+          schema:
+            type: string
+        - name: fromIndex
+          in: query
+          description: Start index for batch/pagination retrieval.
+          schema:
+            type: integer
+        - name: toIndex
+          in: query
+          description: End index for batch retrieval.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size for pagination retrieval.
+          schema:
+            type: integer
+        - name: networthMin
+          in: query
+          description: Minimum net worth filter.
+          schema:
+            type: number
+        - name: networthMax
+          in: query
+          description: Maximum net worth filter.
+          schema:
+            type: number
+        - name: lastModifiedFrom
+          in: query
+          description: Return dossiers modified on or after this date.
+          schema:
+            type: string
+            format: date
+        - name: lastModifiedTo
+          in: query
+          description: Return dossiers modified on or before this date.
+          schema:
+            type: string
+            format: date
+        - name: idOnly
+          in: query
+          description: Return only dossier IDs rather than full records.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A collection of dossiers (or IDs when idOnly=true).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dossier'
+        '401':
+          description: Missing or invalid authentication headers.
+  /dossiers/search/advanced:
+    post:
+      operationId: searchDossiersAdvanced
+      tags: [Search]
+      summary: Advanced dossier search
+      description: >-
+        Search the Wealth-X database with a rich criteria object — keyword,
+        person name, company, geography (country/state/location type), net-worth
+        and total-assets-under-management floors, industry and position,
+        interests/hobbies, education, philanthropy and connection relationships —
+        with sorting and pagination.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DossierSearchRequest'
+      responses:
+        '200':
+          description: Search results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dossier'
+        '400':
+          description: Malformed search criteria.
+        '401':
+          description: Missing or invalid authentication headers.
+  /lastdossierid:
+    get:
+      operationId: getLastDossierId
+      tags: [Reference]
+      summary: Get the last (highest) dossier ID
+      description: Return the most recent dossier ID for the given dossier type, used to bound incremental syncs.
+      parameters:
+        - name: dossierType
+          in: query
+          description: Type of dossier (e.g. person, company).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The last dossier ID.
+        '401':
+          description: Missing or invalid authentication headers.
+  /countries:
+    get:
+      operationId: listCountries
+      tags: [Reference]
+      summary: List countries
+      description: Return the list of countries and their IDs used in search criteria.
+      responses:
+        '200':
+          description: List of countries.
+        '401':
+          description: Missing or invalid authentication headers.
+  /countries/{countryId}/states:
+    get:
+      operationId: listStates
+      tags: [Reference]
+      summary: List states for a country
+      description: Return the list of states/regions and their IDs for a given country (e.g. countryId 1 for the US).
+      parameters:
+        - name: countryId
+          in: path
+          required: true
+          description: Numeric country identifier.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of states.
+        '401':
+          description: Missing or invalid authentication headers.
+  /industrytypes:
+    get:
+      operationId: listIndustryTypes
+      tags: [Reference]
+      summary: List industry types
+      description: Return the list of industry types and their IDs used in search criteria.
+      responses:
+        '200':
+          description: List of industry types.
+        '401':
+          description: Missing or invalid authentication headers.
+  /positions:
+    get:
+      operationId: listPositions
+      tags: [Reference]
+      summary: List positions
+      description: Return the list of career positions/titles used in search criteria.
+      responses:
+        '200':
+          description: List of positions.
+        '401':
+          description: Missing or invalid authentication headers.
+components:
+  securitySchemes:
+    wealthxUsername:
+      type: apiKey
+      in: header
+      name: username
+      description: Wealth-X account username, supplied as a request header.
+    wealthxPassword:
+      type: apiKey
+      in: header
+      name: password
+      description: Wealth-X account password, supplied as a request header.
+    wealthxApiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Wealth-X API key, supplied as a request header.
+  schemas:
+    Dossier:
+      type: object
+      description: >-
+        A Wealth-X wealth-intelligence record on an individual or privately held
+        company. Field set varies by view and subscription; only fields observed
+        in the published collection are named here.
+      properties:
+        dossierId:
+          type: integer
+        dossierType:
+          type: string
+          description: person or company.
+        netWorth:
+          type: number
+        knownAssociates:
+          type: array
+          items:
+            type: object
+      additionalProperties: true
+    DossierSearchRequest:
+      type: object
+      description: Advanced search criteria for the Wealth-X database.
+      properties:
+        keyword:
+          type: string
+        section:
+          type: string
+          description: Section to scope a keyword against (e.g. education, philanthropy, connection).
+        firstName:
+          type: string
+        lastName:
+          type: string
+        exactNameOnly:
+          type: boolean
+        companyName:
+          type: string
+        currentCompanyOnly:
+          type: boolean
+        countryID:
+          type: integer
+        stateID:
+          type: integer
+        locationType:
+          type: string
+        networthMin:
+          type: number
+        networthMax:
+          type: number
+        tafMin:
+          type: number
+          description: Minimum total assets/fortune floor.
+        position:
+          type: string
+        industryType:
+          type: string
+        hobbies:
+          type: string
+        maxRecords:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        orderBy:
+          type: string
+        sortDirection:
+          type: string
+          enum: [asc, desc]
+        idOnly:
+          type: boolean
+      additionalProperties: true

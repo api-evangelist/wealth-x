@@ -1,0 +1,12 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/wealth-x-connect-openapi.yml
+skills:
+  - file: wealth-x-screen-and-enrich.md
+    name: Screen a contact against Wealth-X and pull the dossier
+    api: openapi/wealth-x-connect-openapi.yml
+    operations: [searchDossiersAdvanced, getDossier]
+  - file: wealth-x-build-prospect-list.md
+    name: Build a targeted UHNW prospect list from Wealth-X
+    api: openapi/wealth-x-connect-openapi.yml
+    operations: [listCountries, listStates, listIndustryTypes, listPositions, searchDossiersAdvanced, getAllDossiers]

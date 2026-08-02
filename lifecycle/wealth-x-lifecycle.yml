@@ -1,0 +1,21 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/wealth-x-connect-openapi.yml
+description: >-
+  Lifecycle profile for the Wealth-X Connect API. Versioning is derived from the
+  URI path. No published deprecation policy, SLA, or status page was located
+  (status.wealthx.com does not resolve), so no StatusPage or Deprecation pointer
+  is emitted.
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /rest/v1
+  docs: https://developers.wealthx.com/api/main.html
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No RFC 8594 Sunset/Deprecation header support or deprecation policy documented.
+sla:
+  url: null
+status_page: null
+deprecated_operations: []

@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Wealth-X Connect API
+  version: 1.0.0
+extends: openapi/wealth-x-connect-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: true
+      x-apievangelist-source: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+      x-apievangelist-notes: >-
+        Specification generated from the published Wealth-X API Samples Postman
+        collection. Response schemas are generic because the provider publishes
+        none; auth model, endpoints, and parameters are faithful to the
+        collection.
+  - target: $.info
+    update:
+      x-apievangelist-artifacts:
+        authentication: authentication/wealth-x-authentication.yml
+        conventions: conventions/wealth-x-conventions.yml
+        errors: errors/wealth-x-problem-types.yml
+        data-model: data-model/wealth-x-data-model.yml
+        lifecycle: lifecycle/wealth-x-lifecycle.yml
+        mcp: mcp/wealth-x-mcp.yml
+  - target: $.tags
+    update:
+      - name: Wealth Intelligence
+        description: UHNW/VHNW dossier data and prospecting search.

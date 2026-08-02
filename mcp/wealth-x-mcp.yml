@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/wealth-x-connect-openapi.yml
+description: >-
+  No official hosted or local Wealth-X MCP server was found (searched the docs
+  at developers.wealthx.com, the npm @modelcontextprotocol scope, and public MCP
+  registries — no result). This is a CANDIDATE tool surface derived one-to-one
+  from the operations in the generated Wealth-X Connect OpenAPI, to show how the
+  API would map to MCP tools. It is not an endorsed or published server.
+server:
+  name: wealth-x
+  transport: http
+tools:
+  - name: get_dossier
+    description: Get a single Wealth-X dossier by numeric ID.
+    source_operation: openapi/wealth-x-connect-openapi.yml#getDossier
+  - name: get_all_dossiers
+    description: Bulk-download dossiers by IDs, index range, net-worth band, or last-modified window.
+    source_operation: openapi/wealth-x-connect-openapi.yml#getAllDossiers
+  - name: search_dossiers_advanced
+    description: Advanced search of the Wealth-X database by name, company, geography, net worth, industry, interests, education, philanthropy, and relationships.
+    source_operation: openapi/wealth-x-connect-openapi.yml#searchDossiersAdvanced
+  - name: get_last_dossier_id
+    description: Get the highest dossier ID for a dossier type (to bound incremental syncs).
+    source_operation: openapi/wealth-x-connect-openapi.yml#getLastDossierId
+  - name: list_countries
+    description: List countries and their IDs used in search criteria.
+    source_operation: openapi/wealth-x-connect-openapi.yml#listCountries
+  - name: list_states
+    description: List states/regions and their IDs for a country.
+    source_operation: openapi/wealth-x-connect-openapi.yml#listStates
+  - name: list_industry_types
+    description: List industry types and their IDs used in search criteria.
+    source_operation: openapi/wealth-x-connect-openapi.yml#listIndustryTypes
+  - name: list_positions
+    description: List career positions/titles used in search criteria.
+    source_operation: openapi/wealth-x-connect-openapi.yml#listPositions

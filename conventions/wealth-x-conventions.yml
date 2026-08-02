@@ -1,0 +1,79 @@
+generated: '2026-07-21'
+method: derived
+source: >-
+  openapi/wealth-x-connect-openapi.yml and the published Wealth-X API Samples
+  Postman collection (developers.wealthx.com). Cross-cutting request/response
+  conventions of the Wealth-X Connect API.
+description: >-
+  How the Wealth-X Connect REST API behaves across every operation:
+  authentication, pagination, incremental sync, filtering, and the response
+  envelope. Derived from the generated OpenAPI and the provider's Postman
+  examples; no idempotency, field-expansion, or request-tracing contract is
+  documented by the provider.
+base_url: https://connect.wealthx.com/rest/v1
+api_style: REST over HTTPS, JSON responses; POST search bodies are JSON.
+
+authentication:
+  scheme: three request headers sent together — username, password, apikey
+  detail: authentication/wealth-x-authentication.yml
+  docs: https://developers.wealthx.com/api/main.html
+
+idempotency:
+  supported: false
+  notes: >-
+    No idempotency-key header or contract is documented. Reads (GET) are
+    naturally idempotent; the only write-style call is POST
+    /dossiers/search/advanced, which is a query, not a mutation.
+
+pagination:
+  styles:
+    - style: page-number
+      applies_to: POST /dossiers/search/advanced
+      request_params:
+        page: 1-based page number
+        pageSize: results per page
+        maxRecords: cap on total records returned
+        orderBy: field to sort by
+        sortDirection: asc | desc
+    - style: index-range
+      applies_to: GET /alldossiers
+      request_params:
+        fromIndex: start index
+        toIndex: end index
+        size: page size
+
+incremental_sync:
+  supported: true
+  mechanism: >-
+    GET /alldossiers with lastModifiedFrom / lastModifiedTo date bounds returns
+    dossiers changed in a window; idOnly=true returns only IDs. GET
+    /lastdossierid returns the current high-water-mark ID per dossierType.
+
+filtering:
+  mechanism: >-
+    Search criteria are posted as a JSON body to /dossiers/search/advanced
+    (keyword, name, company, geography via countryID/stateID/locationType,
+    net-worth floors networthMin/tafMin, industry, position, hobbies, and
+    keyword+section scoping for education/philanthropy/relationships).
+  reference_data:
+    - GET /countries and GET /countries/{id}/states for geography IDs
+    - GET /industrytypes for industry filters
+    - GET /positions for position filters
+
+response_envelope:
+  format: JSON array of dossier objects (or IDs when idOnly=true)
+  view_shaping: >-
+    The view parameter (stub | selective) and a fields list control how much of
+    each dossier is returned.
+
+rate_limiting:
+  documented: false
+  notes: No published rate-limit headers or quota policy located.
+
+versioning:
+  scheme: uri-path
+  current: v1
+  detail: lifecycle/wealth-x-lifecycle.yml
+
+errors:
+  detail: errors/wealth-x-problem-types.yml

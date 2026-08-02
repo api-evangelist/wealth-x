@@ -1,0 +1,39 @@
+# Wealth-X
+
+> Wealth-X (an Altrata company) provides curated wealth intelligence on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies. The Wealth-X Connect API delivers this data — dossiers, advanced prospect search, and bulk/incremental sync — directly into a subscriber's CRM or data platform.
+
+## APIs
+
+- [Wealth-X Connect API](https://developers.wealthx.com/api/main.html): REST API over https://connect.wealthx.com/rest/v1 for dossier retrieval, advanced search, and reference data. Auth is three headers: username, password, apikey.
+
+## Specs
+
+- [OpenAPI (generated)](openapi/wealth-x-connect-openapi.yml): OpenAPI 3.0.3 generated from the published Wealth-X API Samples Postman collection.
+
+## Operations
+
+- getDossier — GET /dossiers/{dossierId}: single dossier, shaped by view (stub/selective) and fields.
+- getAllDossiers — GET /alldossiers: bulk download by IDs, index range, net-worth band, or last-modified window.
+- searchDossiersAdvanced — POST /dossiers/search/advanced: search by name, company, geography, net worth, industry, position, interests, education, philanthropy, relationships.
+- getLastDossierId — GET /lastdossierid: high-water-mark ID for incremental sync.
+- listCountries — GET /countries.
+- listStates — GET /countries/{countryId}/states.
+- listIndustryTypes — GET /industrytypes.
+- listPositions — GET /positions.
+
+## Docs
+
+- [API Documentation portal](https://developers.wealthx.com/api/main.html)
+- [Postman collection](https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json)
+- [Wealth-X API product page](https://wealthx.com/products/api)
+- [About Wealth-X](https://wealthx.com/about-us)
+
+## Artifacts
+
+- [Authentication profile](authentication/wealth-x-authentication.yml)
+- [API conventions](conventions/wealth-x-conventions.yml)
+- [Error catalog](errors/wealth-x-problem-types.yml)
+- [Data model](data-model/wealth-x-data-model.yml)
+- [Lifecycle](lifecycle/wealth-x-lifecycle.yml)
+- [MCP tool surface (candidate)](mcp/wealth-x-mcp.yml)
+- [Agent skills](skills/_index.yml)

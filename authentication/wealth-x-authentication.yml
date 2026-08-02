@@ -1,0 +1,30 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/wealth-x-connect-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: wealthxUsername
+  type: apiKey
+  in: header
+  parameter: username
+  description: Wealth-X account username, supplied as a request header.
+  sources:
+  - openapi/wealth-x-connect-openapi.yml
+- name: wealthxPassword
+  type: apiKey
+  in: header
+  parameter: password
+  description: Wealth-X account password, supplied as a request header.
+  sources:
+  - openapi/wealth-x-connect-openapi.yml
+- name: wealthxApiKey
+  type: apiKey
+  in: header
+  parameter: apikey
+  description: Wealth-X API key, supplied as a request header.
+  sources:
+  - openapi/wealth-x-connect-openapi.yml

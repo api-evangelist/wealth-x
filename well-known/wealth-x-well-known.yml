@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: probed
+source: live probe of /.well-known/ paths on Wealth-X hosts
+notes: >-
+  No /.well-known/ discovery documents are published on any Wealth-X host.
+  All probed paths returned 404 (connect./wealthx.com) or 403 (developers.).
+  Absence is valid, recorded data — no WellKnown catalog is advertised.
+hosts:
+  - host: https://connect.wealthx.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://wealthx.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://developers.wealthx.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
