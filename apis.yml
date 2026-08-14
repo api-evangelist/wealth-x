@@ -21,7 +21,10 @@ description: >-
   relationship networks — plus advanced prospect search and bulk/incremental
   sync directly into a subscriber's CRM or data platform. Wealth-X serves
   financial services, luxury, nonprofit and education clients for prospect
-  qualification, relationship intelligence and compliance.
+  qualification, relationship intelligence and compliance. Altrata's developer
+  documentation names Wealth-X as a legacy product migrating to the unified
+  Altrata GraphQL platform (Profile, Relationship, Events and Matching APIs),
+  which also fronts a live OAuth-protected remote MCP server.
 url: https://raw.githubusercontent.com/api-evangelist/wealth-x/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -31,7 +34,7 @@ x-tier: profiled
 x-tier-reason: enriched-from-public-api
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-08-14'
 tags:
 - Company
 - Wealth Intelligence
@@ -41,6 +44,10 @@ tags:
 - Financial Services
 - CRM
 - People Data
+- Altrata
+- GraphQL
+- MCP
+- Wealth Screening
 apis:
 - aid: wealth-x:wealth-x-dossiers-api
   name: Wealth-X Dossiers API
@@ -90,6 +97,101 @@ apis:
     url: https://developers.wealthx.com/docs/api/index.html
   - type: Postman
     url: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+- aid: wealth-x:altrata-profile-api
+  name: Altrata Profile API
+  description: >-
+    GraphQL search and enrichment across Altrata person and organization
+    profiles, including the wealth dataset that Wealth-X contributes — net
+    worth, wealth tier, wealth assets, charitable and political donations.
+    Published by Altrata, Wealth-X's parent, as the successor to the Wealth-X
+    Connect REST API; docs.altrata.com/altrata-migration names Wealth-X as a
+    legacy product migrating to this platform and publishes a Wealth-X to
+    Altrata API mapping document.
+  humanURL: https://docs.altrata.com/profile-api
+  baseURL: https://profile.altrata.com/v1/graphql/
+  tags:
+  - GraphQL
+  - Profiles
+  - Wealth
+  properties:
+  - type: Documentation
+    url: https://docs.altrata.com/profile-api
+  - type: APIReference
+    url: https://docs.altrata.com/profile-api
+  - type: GraphiQL
+    url: https://profile.altrata.com/v1/graphiql/
+  - type: RateLimits
+    url: rate-limits/wealth-x-rate-limits.yml
+  - type: ChangeLog
+    url: changelog/wealth-x-changelog.yml
+- aid: wealth-x:altrata-relationship-api
+  name: Altrata Relationship API
+  description: >-
+    GraphQL API returning ranked relationship paths from the authenticated user
+    to a target person or organization (1st and 2nd degree), plus the full
+    first-degree network of any person. The successor to the Wealth-X dossier
+    "known associates" graph on the unified Altrata platform.
+  humanURL: https://docs.altrata.com/relationship-api
+  baseURL: https://relationships.altrata.com/v1/graphql/
+  tags:
+  - GraphQL
+  - Relationships
+  - Network
+  properties:
+  - type: Documentation
+    url: https://docs.altrata.com/relationship-api
+  - type: APIReference
+    url: https://docs.altrata.com/relationship-api
+  - type: GraphiQL
+    url: https://relationships.altrata.com/v1/graphiql/
+  - type: RateLimits
+    url: rate-limits/wealth-x-rate-limits.yml
+- aid: wealth-x:altrata-events-api
+  name: Altrata Events API
+  description: >-
+    GraphQL API for leadership and organizational events — primarily executive
+    role announcements — queried by person or organization altrataId and sorted
+    by effective date, newest first. A polled query API, not a push/webhook
+    surface.
+  humanURL: https://docs.altrata.com/events-api
+  baseURL: https://events.altrata.com/v1/graphql
+  tags:
+  - GraphQL
+  - Events
+  - Announcements
+  properties:
+  - type: Documentation
+    url: https://docs.altrata.com/events-api
+  - type: APIReference
+    url: https://docs.altrata.com/events-api
+  - type: GraphiQL
+    url: https://events.altrata.com/v1/graphiql
+  - type: RateLimits
+    url: rate-limits/wealth-x-rate-limits.yml
+- aid: wealth-x:altrata-matching-api
+  name: Altrata Matching API
+  description: >-
+    Asynchronous bulk matching of a customer dataset against the Altrata
+    dataset. Submit a personsMatch or organizations mutation, receive a
+    requestId, poll until matched, then page the results as unique / possible /
+    no match. Accepts wxPersonId — the Wealth-X person identifier — as a
+    first-class match input, which is how legacy Wealth-X identity resolves into
+    the unified model. 6MB maximum per HTTP POST.
+  humanURL: https://docs.altrata.com/api
+  baseURL: https://matching.altrata.com/v1/graphql
+  tags:
+  - GraphQL
+  - Matching
+  - Identity Resolution
+  properties:
+  - type: Documentation
+    url: https://docs.altrata.com/api
+  - type: APIReference
+    url: https://docs.altrata.com/api
+  - type: GraphiQL
+    url: https://matching.altrata.com/v1/graphiql
+  - type: RateLimits
+    url: rate-limits/wealth-x-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -134,8 +236,34 @@ common:
   url: skills/_index.yml
 - type: LLMsTxt
   url: llms/wealth-x-llms.txt
+- type: Packages
+  url: packages/wealth-x-packages.yml
+- type: Plans
+  url: plans/wealth-x-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/wealth-x-rate-limits.yml
+- type: ChangeLog
+  url: changelog/wealth-x-changelog.yml
+- type: OAuthScopes
+  url: scopes/wealth-x-scopes.yml
+- type: TrustCenter
+  url: security/wealth-x-trust-center.yml
+- type: Compliance
+  url: security/wealth-x-trust-center.yml
+- type: WellKnown
+  url: well-known/wealth-x-well-known.yml
+- type: Deprecation
+  url: lifecycle/wealth-x-lifecycle.yml
+- type: LLMsTxt
+  url: llms/wealth-x-llms-published.txt
+- type: GettingStarted
+  url: https://docs.altrata.com/service-user-credentials
+- type: Login
+  url: https://app.altrata.com/login
+- type: Blog
+  url: https://altrata.com/resources/types/articles
 x-enrichment:
-  date: '2026-07-21'
+  date: '2026-08-14'
   status: enriched
-  artifacts_added: 15
+  artifacts_added: 9
   pass: local-v1
