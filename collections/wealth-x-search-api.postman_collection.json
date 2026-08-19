@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "5d0ba3db-aa03-4839-9a75-b50dfd8ba486",
+      "name": "Search",
+      "description": {
+        "content": "Advanced search across the Wealth-X database.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "209310a9-d938-4558-b281-c738aa45674e",
+          "name": "Advanced dossier search",
+          "request": {
+            "name": "Advanced dossier search",
+            "description": {
+              "content": "Search the Wealth-X database with a rich criteria object — keyword, person name, company, geography (country/state/location type), net-worth and total-assets-under-management floors, industry and position, interests/hobbies, education, philanthropy and connection relationships — with sorting and pagination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dossiers",
+                "search",
+                "advanced"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"<string>\",\n  \"section\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"exactNameOnly\": \"<boolean>\",\n  \"companyName\": \"<string>\",\n  \"currentCompanyOnly\": \"<boolean>\",\n  \"countryID\": \"<integer>\",\n  \"stateID\": \"<integer>\",\n  \"locationType\": \"<string>\",\n  \"networthMin\": \"<number>\",\n  \"networthMax\": \"<number>\",\n  \"tafMin\": \"<number>\",\n  \"position\": \"<string>\",\n  \"industryType\": \"<string>\",\n  \"hobbies\": \"<string>\",\n  \"maxRecords\": \"<integer>\",\n  \"page\": \"<integer>\",\n  \"pageSize\": \"<integer>\",\n  \"orderBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"idOnly\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fc6dfd35-6c76-4e3d-bb62-2dd50e93dc87",
+              "name": "Search results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    "search",
+                    "advanced"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"keyword\": \"<string>\",\n  \"section\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"exactNameOnly\": \"<boolean>\",\n  \"companyName\": \"<string>\",\n  \"currentCompanyOnly\": \"<boolean>\",\n  \"countryID\": \"<integer>\",\n  \"stateID\": \"<integer>\",\n  \"locationType\": \"<string>\",\n  \"networthMin\": \"<number>\",\n  \"networthMax\": \"<number>\",\n  \"tafMin\": \"<number>\",\n  \"position\": \"<string>\",\n  \"industryType\": \"<string>\",\n  \"hobbies\": \"<string>\",\n  \"maxRecords\": \"<integer>\",\n  \"page\": \"<integer>\",\n  \"pageSize\": \"<integer>\",\n  \"orderBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"idOnly\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"dossierId\": 8551,\n    \"dossierType\": \"string\",\n    \"netWorth\": 2791.852760146983\n  },\n  {\n    \"dossierId\": 9052,\n    \"dossierType\": \"string\",\n    \"netWorth\": 2246.021732401777\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2e50edc-6533-4ac5-9a8a-6be5410b8e2d",
+              "name": "Malformed search criteria.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    "search",
+                    "advanced"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"keyword\": \"<string>\",\n  \"section\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"exactNameOnly\": \"<boolean>\",\n  \"companyName\": \"<string>\",\n  \"currentCompanyOnly\": \"<boolean>\",\n  \"countryID\": \"<integer>\",\n  \"stateID\": \"<integer>\",\n  \"locationType\": \"<string>\",\n  \"networthMin\": \"<number>\",\n  \"networthMax\": \"<number>\",\n  \"tafMin\": \"<number>\",\n  \"position\": \"<string>\",\n  \"industryType\": \"<string>\",\n  \"hobbies\": \"<string>\",\n  \"maxRecords\": \"<integer>\",\n  \"page\": \"<integer>\",\n  \"pageSize\": \"<integer>\",\n  \"orderBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"idOnly\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "22ee7619-3df9-4b54-b42b-2dc66d714132",
+              "name": "Missing or invalid authentication headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    "search",
+                    "advanced"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"keyword\": \"<string>\",\n  \"section\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"exactNameOnly\": \"<boolean>\",\n  \"companyName\": \"<string>\",\n  \"currentCompanyOnly\": \"<boolean>\",\n  \"countryID\": \"<integer>\",\n  \"stateID\": \"<integer>\",\n  \"locationType\": \"<string>\",\n  \"networthMin\": \"<number>\",\n  \"networthMax\": \"<number>\",\n  \"tafMin\": \"<number>\",\n  \"position\": \"<string>\",\n  \"industryType\": \"<string>\",\n  \"hobbies\": \"<string>\",\n  \"maxRecords\": \"<integer>\",\n  \"page\": \"<integer>\",\n  \"pageSize\": \"<integer>\",\n  \"orderBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"idOnly\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://connect.wealthx.com/rest/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "username"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "98617ddf-1c06-4527-996a-89eadd1e9197",
+    "name": "Wealth-X Connect Dossiers Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform. It exposes single- and bulk-dossier retrieval, an advanced dossier search (by name, company, geography, net worth, industry, interests, education, philanthropy and relationships) and reference-data lookups (countries, states, industry types, positions). This specification was generated faithfully from the provider's published Postman collection; endpoints, parameters and the authentication model are taken verbatim from that collection. No response schemas are published by the provider, so response bodies are described generically.\n\nContact Support:\n Name: Wealth-X Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

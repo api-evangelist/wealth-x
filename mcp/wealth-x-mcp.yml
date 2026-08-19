@@ -1,38 +1,132 @@
-generated: '2026-07-21'
-method: derived
-status: candidate
-source: openapi/wealth-x-connect-openapi.yml
+generated: '2026-08-14'
+method: probed
+status: published
+source: https://mcp.altrata.com/mcp
 description: >-
-  No official hosted or local Wealth-X MCP server was found (searched the docs
-  at developers.wealthx.com, the npm @modelcontextprotocol scope, and public MCP
-  registries — no result). This is a CANDIDATE tool surface derived one-to-one
-  from the operations in the generated Wealth-X Connect OpenAPI, to show how the
-  API would map to MCP tools. It is not an endorsed or published server.
+  A real, reachable remote MCP server is operated by Altrata — Wealth-X's parent
+  — at https://mcp.altrata.com/mcp. It is OAuth-protected: an anonymous GET or
+  POST returns HTTP 401 with
+  `WWW-Authenticate: Bearer realm="Altrata MCP", resource_metadata=".../.well-known/oauth-protected-resource/mcp", scope="openid email"`,
+  and the protected-resource and authorization-server metadata documents both
+  return HTTP 200 with real content. Because the live server rejects anonymous
+  `tools/list`, the actual tool names and inputSchemas could not be read; the
+  candidate tool list below remains DERIVED from the legacy Wealth-X Connect
+  OpenAPI and is explicitly NOT the server's real tool list.
+ownership:
+  host_owner: Altrata (parent company)
+  belongs_to_this_provider: true
+  justification: >-
+    Wealth-X is an Altrata brand, and Altrata's own developer documentation
+    states that customers are migrating "from legacy data products — including
+    relationship science, boardex, and wealth x — to the unified altrata
+    platform" and publishes a "Wealth-X to Altrata API mapping document"
+    (https://docs.altrata.com/altrata-migration). The Altrata Matching API also
+    accepts `wxPersonId` — the Wealth-X person identifier — as a first-class
+    match input (https://docs.altrata.com/api). The MCP server sits on that
+    successor platform, so it is the agent surface for Wealth-X data.
+  caveat: >-
+    The server is branded "Altrata MCP" and serves the whole Altrata platform
+    (BoardEx, WealthEngine, Wealth-X, RelSci, BoardRoom Insiders). If Altrata is
+    later profiled as its own provider repo, this artifact should be reconciled
+    so the same server is not double-counted.
+deployment:
+  mode: remote
+  endpoint: https://mcp.altrata.com/mcp
+  auth: oauth
+  verified: probed
 server:
-  name: wealth-x
-  transport: http
+  name: Altrata MCP
+  realm: Altrata MCP
+  transport: streamable-http
+  runtime_observed: Express behind an AWS ALB and CloudFront
+authorization:
+  protected_resource_metadata: https://mcp.altrata.com/.well-known/oauth-protected-resource/mcp
+  authorization_server_metadata: https://mcp.altrata.com/.well-known/oauth-authorization-server
+  issuer: https://mcp.altrata.com
+  authorization_endpoint: https://serviceauth.altrata.com/oauth2/authorize
+  token_endpoint: https://serviceauth.altrata.com/oauth2/token
+  jwks_uri: https://cognito-idp.us-east-2.amazonaws.com/us-east-2_Pe8aMS8JG/.well-known/jwks.json
+  client_id: 21saqug474pjtpong1gue9505
+  grant_types_supported: [authorization_code, refresh_token]
+  response_types_supported: [code]
+  code_challenge_methods_supported: [S256]
+  scopes_supported: [openid, email]
+  identity_provider: Amazon Cognito (us-east-2_Pe8aMS8JG)
+  saved_documents:
+    - well-known/wealth-x-oauth-protected-resource.json
+    - well-known/wealth-x-oauth-authorization-server.json
+x-evidence:
+  - fetched: '2026-08-14'
+    url: https://mcp.altrata.com/mcp
+    method: GET
+    http_status: 401
+    content_type: application/json; charset=utf-8
+    body: '{"error":"Authorization header required"}'
+  - fetched: '2026-08-14'
+    url: https://mcp.altrata.com/mcp
+    method: POST
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    note: >-
+      Live tool list is auth-gated. Tool names and inputSchemas need an
+      authenticated introspection pass; they are NOT recorded here.
+  - fetched: '2026-08-14'
+    url: https://mcp.altrata.com/.well-known/oauth-protected-resource
+    http_status: 200
+    content_type: application/json; charset=utf-8
+  - fetched: '2026-08-14'
+    url: https://mcp.altrata.com/.well-known/oauth-authorization-server
+    http_status: 200
+    content_type: application/json; charset=utf-8
+  - fetched: '2026-08-14'
+    url: https://mcp.wealthx.com/mcp
+    http_status: 0
+    note: Host does not resolve. There is no Wealth-X-branded MCP endpoint.
+rate_limit:
+  observed: 500 requests per 60s (RateLimit-Policy "500;w=60")
+  detail: rate-limits/wealth-x-rate-limits.yml
+tools_status: auth-gated
+tools_note: >-
+  The entries below are CANDIDATES derived from the legacy Wealth-X Connect
+  OpenAPI to show how that API maps to MCP tools. They are NOT the tools the
+  Altrata MCP server publishes — those could not be read anonymously.
 tools:
   - name: get_dossier
     description: Get a single Wealth-X dossier by numeric ID.
-    source_operation: openapi/wealth-x-connect-openapi.yml#getDossier
+    source_operation: openapi/wealth-x-dossiers-api-openapi.yml#getDossier
+    status: candidate
   - name: get_all_dossiers
     description: Bulk-download dossiers by IDs, index range, net-worth band, or last-modified window.
-    source_operation: openapi/wealth-x-connect-openapi.yml#getAllDossiers
+    source_operation: openapi/wealth-x-dossiers-api-openapi.yml#getAllDossiers
+    status: candidate
   - name: search_dossiers_advanced
-    description: Advanced search of the Wealth-X database by name, company, geography, net worth, industry, interests, education, philanthropy, and relationships.
-    source_operation: openapi/wealth-x-connect-openapi.yml#searchDossiersAdvanced
+    description: >-
+      Advanced search of the Wealth-X database by name, company, geography, net
+      worth, industry, interests, education, philanthropy, and relationships.
+    source_operation: openapi/wealth-x-search-api-openapi.yml#searchDossiersAdvanced
+    status: candidate
   - name: get_last_dossier_id
     description: Get the highest dossier ID for a dossier type (to bound incremental syncs).
-    source_operation: openapi/wealth-x-connect-openapi.yml#getLastDossierId
+    source_operation: openapi/wealth-x-reference-api-openapi.yml#getLastDossierId
+    status: candidate
   - name: list_countries
     description: List countries and their IDs used in search criteria.
-    source_operation: openapi/wealth-x-connect-openapi.yml#listCountries
+    source_operation: openapi/wealth-x-reference-api-openapi.yml#listCountries
+    status: candidate
   - name: list_states
     description: List states/regions and their IDs for a country.
-    source_operation: openapi/wealth-x-connect-openapi.yml#listStates
+    source_operation: openapi/wealth-x-reference-api-openapi.yml#listStates
+    status: candidate
   - name: list_industry_types
     description: List industry types and their IDs used in search criteria.
-    source_operation: openapi/wealth-x-connect-openapi.yml#listIndustryTypes
+    source_operation: openapi/wealth-x-reference-api-openapi.yml#listIndustryTypes
+    status: candidate
   - name: list_positions
     description: List career positions/titles used in search criteria.
-    source_operation: openapi/wealth-x-connect-openapi.yml#listPositions
+    source_operation: openapi/wealth-x-reference-api-openapi.yml#listPositions
+    status: candidate
+next_step: >-
+  Re-run tools/list with a bearer token from the Altrata authorization server to
+  capture the real tool names and inputSchemas, then emit
+  mcp/wealth-x-tool-crosswalk.yml. No crosswalk is emitted in this pass because
+  binding gated tools to REST operations by guesswork would fabricate the map.

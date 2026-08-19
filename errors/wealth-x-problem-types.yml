@@ -1,23 +1,125 @@
-generated: '2026-07-21'
-method: derived
-source: openapi/wealth-x-connect-openapi.yml
-format: http-status
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.altrata.com/errors-warnings-and-limits and
+  https://docs.altrata.com/profile-api (searched), plus
+  openapi/wealth-x-connect-openapi.yml (derived)
+format: mixed
 description: >-
-  Error catalog derived from the HTTP status responses in the generated Wealth-X
-  Connect OpenAPI. The provider publishes no RFC 9457 problem+json envelope and
-  no dedicated error-code reference, so these are the standard HTTP semantics
-  captured per operation.
-problems:
-  - status: 400
-    title: Bad request
-    meaning: Malformed search criteria in the advanced-search body.
-    source_operation: openapi/wealth-x-connect-openapi.yml#searchDossiersAdvanced
-  - status: 401
-    title: Unauthorized
-    meaning: Missing or invalid username / password / apikey authentication headers.
-    remediation: Supply all three authentication headers with valid Wealth-X credentials.
-    applies_to: all operations
-  - status: 404
-    title: Not found
-    meaning: No dossier exists for the supplied dossier ID.
-    source_operation: openapi/wealth-x-connect-openapi.yml#getDossier
+  Two error models, one per surface. The legacy Wealth-X Connect REST API uses
+  bare HTTP status codes with no published error reference. The successor
+  Altrata GraphQL platform publishes a real, named error taxonomy: errors are
+  returned as typed union members inside the GraphQL response, plus an `errors`
+  array carrying an `errorType` discriminator. Neither surface uses RFC 9457
+  application/problem+json.
+rfc9457: false
+
+graphql_error_types:
+  surface: Altrata platform GraphQL APIs
+  envelope: >-
+    Errors arrive two ways. (1) As inline-fragment union members on the query
+    result — `... on GenericError { __typename errorCode errorMessage }`. (2) As
+    an `errors` array alongside `data`, where each entry carries `path`, `data`,
+    `errorType`, `errorInfo`, `locations` and `message`.
+  source: https://docs.altrata.com/errors-warnings-and-limits
+  discriminators:
+    - errorType: unauthorized
+      title: Permission denied
+      meaning: >-
+        The query requested a field the caller's subscription does not entitle
+        them to. The response payload is still valid and may be consumed — only
+        the unentitled field is withheld.
+      remediation: Contact the Altrata account representative to license the package containing the field.
+      testable_via: 'query MyQuery { debug { permissionDeniedExample } }'
+    - errorType: deprecated
+      title: Deprecated field
+      meaning: >-
+        The query used a deprecated field. The message names the deprecation and
+        an alternative field where one exists. The response payload is still
+        valid and may be consumed.
+      remediation: Remove the affected fields from queries and mutations; deprecated fields are removed in future releases.
+      testable_via: 'query MyQuery { debug { deprecatedExample } }'
+      note: The field may be hidden in the GraphiQL explorer, which hides deprecated fields by default.
+    - errorType: error
+      title: Generic / validation failure
+      meaning: >-
+        Any other error type. Verbatim guidance from the docs — "in the event of
+        any other type of error being received, the response payload must be
+        discarded."
+      remediation: Discard the response payload; do not partially consume it.
+  union_members:
+    - name: GenericError
+      fields: [__typename, errorCode, errorMessage, correlationId]
+      note: >-
+        `correlationId` is the only request-tracing identifier Altrata exposes
+        anywhere in its documented surface.
+    - name: ValidationError
+      fields: [__typename, errorCode, errorMessage]
+      example_message: "missing mandatory field 'before' @ persons"
+    - name: AuthorizationError
+      fields: [authorizationErrorCode]
+    - name: EntityNotFoundError
+      fields: []
+  known_constraints:
+    - constraint: Named GraphQL fragment spreads are not supported
+      consequence: >-
+        A request using a named fragment spread (including on nested fields)
+        fails with a GenericError. Type selection must use inline fragments
+        (`... on Person { id name }`).
+      source: https://docs.altrata.com/errors-warnings-and-limits
+    - constraint: The `last` pagination argument requires `before`
+      consequence: "Using `last` with `after` returns: missing mandatory field 'before' @ persons"
+      source: https://docs.altrata.com/paging
+    - constraint: Matching API request bodies are capped at 6MB per HTTP POST
+      consequence: Larger payloads must be chunked across requests.
+      source: https://docs.altrata.com/api
+
+http_errors:
+  surface: Altrata platform GraphQL APIs
+  source: https://docs.altrata.com/errors-warnings-and-limits
+  problems:
+    - status: 429
+      title: Too Many Requests
+      meaning: The per-second rate limit for the service has been exceeded.
+      remediation: >-
+        Use retries and an exponential backoff algorithm with jitter, then
+        resubmit the request.
+    - status: 429
+      title: Limit Exceeded
+      meaning: The daily quota has been exceeded.
+      remediation: Quota is set by subscription entitlement; contact the account representative.
+    - status: 401
+      title: Unauthorized
+      meaning: >-
+        Observed on anonymous probes of profile.altrata.com and
+        relationships.altrata.com — '{"message":"Unauthorized"}' and
+        '{"errorType":"UnauthorizedException","message":"Valid authorization
+        header not provided."}'.
+      method: probed
+    - status: 403
+      title: Forbidden
+      meaning: Observed on anonymous probes of events.altrata.com and matching.altrata.com.
+      method: probed
+
+legacy_http_errors:
+  surface: Wealth-X Connect REST API
+  source: openapi/wealth-x-connect-openapi.yml
+  method: derived
+  note: >-
+    developers.wealthx.com publishes no error reference. These are the HTTP
+    status semantics captured per operation from the specification generated
+    from the provider's Postman collection.
+  problems:
+    - status: 400
+      title: Bad request
+      meaning: Malformed search criteria in the advanced-search body.
+      source_operation: openapi/wealth-x-search-api-openapi.yml#searchDossiersAdvanced
+    - status: 401
+      title: Unauthorized
+      meaning: Missing or invalid username / password / apikey authentication headers.
+      remediation: Supply all three authentication headers with valid Wealth-X credentials.
+      applies_to: all operations
+    - status: 404
+      title: Not found
+      meaning: No dossier exists for the supplied dossier ID.
+      source_operation: openapi/wealth-x-dossiers-api-openapi.yml#getDossier

@@ -1,0 +1,569 @@
+{
+  "item": [
+    {
+      "id": "1ef22006-a4bd-46f3-9d4f-ecf3c3d22b4d",
+      "name": "Dossiers",
+      "description": {
+        "content": "Retrieve individual and company wealth-intelligence dossiers.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d69f222a-795f-45a3-a362-e9ce4f405cfb",
+          "name": "Get a single dossier",
+          "request": {
+            "name": "Get a single dossier",
+            "description": {
+              "content": "Retrieve a single Wealth-X dossier by its numeric dossier ID. The response can be shaped with the view parameter (stub vs selective) and narrowed to specific fields.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dossiers",
+                ":dossierId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "view",
+                  "value": "<string>",
+                  "description": "Shape of the returned record."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to return when view=selective (e.g. netWorth, knownAssociates)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dossierId",
+                  "description": "(Required) Numeric identifier of the dossier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "277a6244-67ce-4f8c-bede-54a7715f400e",
+              "name": "The requested dossier.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    ":dossierId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "view",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dossierId",
+                      "description": "(Required) Numeric identifier of the dossier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"dossierId\": 1587,\n  \"dossierType\": \"string\",\n  \"netWorth\": 8679.296283170257\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "753d0e9b-745f-430b-81de-fc93679277dc",
+              "name": "Missing or invalid authentication headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    ":dossierId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "view",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dossierId",
+                      "description": "(Required) Numeric identifier of the dossier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c229b48f-98b8-4df4-9e4f-4280b44ecbe1",
+              "name": "No dossier exists for the supplied ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dossiers",
+                    ":dossierId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "view",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dossierId",
+                      "description": "(Required) Numeric identifier of the dossier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55ff9d72-1b64-4f5a-9662-274b7ec6219a",
+          "name": "Bulk-download dossiers",
+          "request": {
+            "name": "Bulk-download dossiers",
+            "description": {
+              "content": "Bulk retrieval of dossiers, selectable by explicit dossier IDs, by index/batch ranges, by net-worth band, or by last-modified window for incremental synchronisation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alldossiers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dossierIds",
+                  "value": "<string>",
+                  "description": "Comma-separated list of dossier IDs to download."
+                },
+                {
+                  "disabled": false,
+                  "key": "dossierType",
+                  "value": "<string>",
+                  "description": "Type of dossier (e.g. person, company)."
+                },
+                {
+                  "disabled": false,
+                  "key": "view",
+                  "value": "<string>",
+                  "description": "Shape of the returned records (stub / selective)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "fromIndex",
+                  "value": "<integer>",
+                  "description": "Start index for batch/pagination retrieval."
+                },
+                {
+                  "disabled": false,
+                  "key": "toIndex",
+                  "value": "<integer>",
+                  "description": "End index for batch retrieval."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "Page size for pagination retrieval."
+                },
+                {
+                  "disabled": false,
+                  "key": "networthMin",
+                  "value": "<number>",
+                  "description": "Minimum net worth filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "networthMax",
+                  "value": "<number>",
+                  "description": "Maximum net worth filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "lastModifiedFrom",
+                  "value": "<date>",
+                  "description": "Return dossiers modified on or after this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "lastModifiedTo",
+                  "value": "<date>",
+                  "description": "Return dossiers modified on or before this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "idOnly",
+                  "value": "<boolean>",
+                  "description": "Return only dossier IDs rather than full records."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "acb7e3b9-5863-4312-b292-3d4d123ee4f7",
+              "name": "A collection of dossiers (or IDs when idOnly=true).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alldossiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dossierIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dossierType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "view",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fromIndex",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "toIndex",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "networthMin",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networthMax",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "lastModifiedFrom",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "lastModifiedTo",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "idOnly",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"dossierId\": 4077,\n    \"dossierType\": \"string\",\n    \"netWorth\": 5000.312603317406\n  },\n  {\n    \"dossierId\": 8152,\n    \"dossierType\": \"string\",\n    \"netWorth\": 9831.828371599917,\n    \"key_0\": 8432.417590945146,\n    \"key_1\": 9270.5032844236\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b58fa8e-c9fc-4885-9ece-b100ecd955ed",
+              "name": "Missing or invalid authentication headers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alldossiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dossierIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dossierType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "view",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fromIndex",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "toIndex",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "networthMin",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networthMax",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "lastModifiedFrom",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "lastModifiedTo",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "idOnly",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "username",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://connect.wealthx.com/rest/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "username"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a9fb112b-1996-413a-a381-0546dd2f7506",
+    "name": "Wealth-X Connect Dossiers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform. It exposes single- and bulk-dossier retrieval, an advanced dossier search (by name, company, geography, net worth, industry, interests, education, philanthropy and relationships) and reference-data lookups (countries, states, industry types, positions). This specification was generated faithfully from the provider's published Postman collection; endpoints, parameters and the authentication model are taken verbatim from that collection. No response schemas are published by the provider, so response bodies are described generically.\n\nContact Support:\n Name: Wealth-X Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

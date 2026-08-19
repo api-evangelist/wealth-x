@@ -1,74 +1,203 @@
-generated: '2026-07-21'
-method: derived
+generated: '2026-08-14'
+method: searched
 source: >-
-  openapi/wealth-x-connect-openapi.yml and the published Wealth-X API Samples
-  Postman collection (developers.wealthx.com). Cross-cutting request/response
-  conventions of the Wealth-X Connect API.
+  https://docs.altrata.com/paging, https://docs.altrata.com/errors-warnings-and-limits,
+  https://docs.altrata.com/service-user-credentials, https://docs.altrata.com/urls
+  (searched); openapi/wealth-x-connect-openapi.yml and the published Wealth-X API
+  Samples Postman collection (derived).
 description: >-
-  How the Wealth-X Connect REST API behaves across every operation:
-  authentication, pagination, incremental sync, filtering, and the response
-  envelope. Derived from the generated OpenAPI and the provider's Postman
-  examples; no idempotency, field-expansion, or request-tracing contract is
-  documented by the provider.
-base_url: https://connect.wealthx.com/rest/v1
-api_style: REST over HTTPS, JSON responses; POST search bodies are JSON.
+  Cross-cutting request/response semantics for both Wealth-X surfaces: the legacy
+  Wealth-X Connect REST API and the successor Altrata GraphQL platform that
+  docs.altrata.com/altrata-migration names as its migration target. Neither
+  surface supports idempotency keys, field expansion, or request-ID tracing
+  headers.
+
+surfaces:
+  legacy:
+    name: Wealth-X Connect REST API
+    base_url: https://connect.wealthx.com/rest/v1
+    api_style: REST over HTTPS, JSON responses; POST search bodies are JSON.
+    docs: https://developers.wealthx.com/api/main.html
+  successor:
+    name: Altrata platform GraphQL APIs
+    api_style: GraphQL over HTTPS, one endpoint per service
+    endpoints:
+      profile: https://profile.altrata.com/v1/graphql/
+      relationships: https://relationships.altrata.com/v1/graphql/
+      events: https://events.altrata.com/v1/graphql
+      matching: https://matching.altrata.com/v1/graphql
+    graphiql:
+      profile: https://profile.altrata.com/v1/graphiql/
+      relationships: https://relationships.altrata.com/v1/graphiql/
+      events: https://events.altrata.com/v1/graphiql
+      matching: https://matching.altrata.com/v1/graphiql
+    docs: https://docs.altrata.com/urls
+    warning: >-
+      Verbatim from the docs — "the graphql api (for application usage) url and
+      the graphiql ui (for human usage) url is very similar", so check the
+      spelling. /graphql is the machine endpoint; /graphiql is the human UI.
 
 authentication:
-  scheme: three request headers sent together — username, password, apikey
-  detail: authentication/wealth-x-authentication.yml
-  docs: https://developers.wealthx.com/api/main.html
+  legacy:
+    scheme: three request headers sent together — username, password, apikey
+    detail: authentication/wealth-x-authentication.yml
+    docs: https://developers.wealthx.com/api/main.html
+  successor:
+    scheme: OAuth 2.0 client_credentials, then a bearer token on the GraphQL call
+    token_endpoint: https://api.auth.altrata.com/oauth2/token?grant_type=client_credentials
+    request_headers:
+      x-api-key: The API key issued with the subscription.
+      Authorization: HTTP Basic — base64(serviceUsername:servicePassword).
+    caution: >-
+      The username for Altrata service credentials is NOT the account email; it
+      is the username sent during initial password setup.
+    provisioning: >-
+      Not self-serve. Credentials arrive by email during subscription setup;
+      missing credentials go to clientsuccess@altrata.com or a client success
+      representative.
+    docs: https://docs.altrata.com/service-user-credentials
+  mcp:
+    scheme: OAuth 2.0 authorization_code + PKCE (S256), Amazon Cognito backed
+    detail: scopes/wealth-x-scopes.yml
+    endpoint: https://mcp.altrata.com/mcp
 
 idempotency:
   supported: false
   notes: >-
-    No idempotency-key header or contract is documented. Reads (GET) are
-    naturally idempotent; the only write-style call is POST
-    /dossiers/search/advanced, which is a query, not a mutation.
+    Neither surface documents an idempotency-key header or an idempotent-retry
+    contract. On the legacy REST API the only write-shaped call, POST
+    /dossiers/search/advanced, is a query rather than a mutation. On the Altrata
+    platform the Matching API uses a GraphQL mutation (personsMatch) that returns
+    a requestId, but that requestId is a job handle for polling results — it is
+    not an idempotency key, and resubmitting the same payload creates a new job.
+    No Idempotency pointer is emitted for this provider.
 
 pagination:
-  styles:
-    - style: page-number
-      applies_to: POST /dossiers/search/advanced
-      request_params:
-        page: 1-based page number
-        pageSize: results per page
-        maxRecords: cap on total records returned
-        orderBy: field to sort by
-        sortDirection: asc | desc
-    - style: index-range
-      applies_to: GET /alldossiers
-      request_params:
-        fromIndex: start index
-        toIndex: end index
-        size: page size
+  legacy:
+    styles:
+      - style: page-number
+        applies_to: POST /dossiers/search/advanced
+        request_params:
+          page: 1-based page number
+          pageSize: results per page
+          maxRecords: cap on total records returned
+          orderBy: field to sort by
+          sortDirection: asc | desc
+      - style: index-range
+        applies_to: GET /alldossiers
+        request_params:
+          fromIndex: start index
+          toIndex: end index
+          size: page size
+  successor:
+    style: cursor (Relay-style connections)
+    scope: Common to every Altrata GraphQL API.
+    request_argument: pageInfo
+    request_fields:
+      after: Fetch items after the specified cursor.
+      before: Fetch items before the specified cursor.
+      first: Fetch the first n elements in the list.
+      last: Fetch the last n elements — mandatory to pair with `before`.
+    response_field: pageInfoResponse
+    response_fields:
+      totalCount: Total number of items matching the search criteria.
+      pageInfo.hasNextPage: More pages exist after the current page.
+      pageInfo.hasPreviousPage: Pages exist before the current page.
+      pageInfo.startCursor: Cursor at the start of the current page.
+      pageInfo.endCursor: Cursor for the next page of results.
+    cursor_format: Opaque string, observed in the docs as `altptr10`, `altptr20`.
+    page_size_limits: >-
+      Page limits and default page sizes differ per API; the docs direct callers
+      to the specific API's documentation rather than publishing one table.
+    docs: https://docs.altrata.com/paging
+
+field_expansion:
+  supported: false
+  notes: >-
+    The legacy REST API offers response SHAPING rather than expansion — a `view`
+    parameter (stub | selective) plus a `fields` list. GraphQL makes expansion
+    moot: the caller names exactly the fields they want. There is no sparse-
+    fieldset or `expand=` parameter on either surface.
+
+entitlement_filtering:
+  mechanism: >-
+    On the Altrata platform, the fields a caller receives are determined by
+    subscription entitlement, not by the query. Requesting an unentitled field
+    returns an error block with errorType `unauthorized` while the rest of the
+    response payload stays valid and consumable — so a partial response is the
+    normal, expected case, and clients must handle it.
+  detail: plans/wealth-x-plans-pricing.yml
+  docs: https://docs.altrata.com/data-packages-and-subscription-entitlements
+
+request_tracing:
+  header: null
+  supported: false
+  notes: >-
+    No X-Request-Id / X-Correlation-Id request or response header is documented
+    on either surface. The only tracing identifier available is `correlationId`,
+    a field on the GraphQL GenericError union member — available only when a
+    request fails.
 
 incremental_sync:
-  supported: true
-  mechanism: >-
-    GET /alldossiers with lastModifiedFrom / lastModifiedTo date bounds returns
-    dossiers changed in a window; idOnly=true returns only IDs. GET
-    /lastdossierid returns the current high-water-mark ID per dossierType.
+  legacy:
+    supported: true
+    mechanism: >-
+      GET /alldossiers with lastModifiedFrom / lastModifiedTo date bounds returns
+      dossiers changed in a window; idOnly=true returns only IDs. GET
+      /lastdossierid returns the current high-water-mark ID per dossierType.
+  successor:
+    supported: true
+    mechanism: >-
+      Bulk change is delivered out-of-band through the Altrata Data Feed rather
+      than the APIs — sFTP, Amazon S3, Snowflake private listing, or Delta
+      Sharing. "The data structure, contents, refresh cadence, and update
+      mechanics are identical across channels; only the method of access
+      differs."
+    docs: https://docs.altrata.com/access-channels
 
 filtering:
-  mechanism: >-
-    Search criteria are posted as a JSON body to /dossiers/search/advanced
-    (keyword, name, company, geography via countryID/stateID/locationType,
-    net-worth floors networthMin/tafMin, industry, position, hobbies, and
-    keyword+section scoping for education/philanthropy/relationships).
-  reference_data:
-    - GET /countries and GET /countries/{id}/states for geography IDs
-    - GET /industrytypes for industry filters
-    - GET /positions for position filters
+  legacy:
+    mechanism: >-
+      Search criteria are posted as a JSON body to /dossiers/search/advanced
+      (keyword, name, company, geography via countryID/stateID/locationType,
+      net-worth floors networthMin/tafMin, industry, position, hobbies, and
+      keyword+section scoping for education/philanthropy/relationships).
+    reference_data:
+      - GET /countries and GET /countries/{id}/states for geography IDs
+      - GET /industrytypes for industry filters
+      - GET /positions for position filters
+  successor:
+    mechanism: >-
+      A `filter` argument per query — e.g. personKeywordSearch(filter:
+      {searchKeyword: "..."}) where searchKeyword spans firstName, lastName and
+      organizationName; personIdSearch(id: "1-per-4518022");
+      personBulkIdSearch(filter: {ids: [...]}) capped at 100 people per call.
+    identifier_format: >-
+      Altrata IDs are typed, prefixed strings — `1-per-<n>` for a person,
+      `1-org-<n>` for an organization.
 
 response_envelope:
-  format: JSON array of dossier objects (or IDs when idOnly=true)
-  view_shaping: >-
-    The view parameter (stub | selective) and a fields list control how much of
-    each dossier is returned.
+  legacy:
+    format: JSON array of dossier objects (or IDs when idOnly=true)
+    view_shaping: The view parameter (stub | selective) and a fields list control how much of each dossier is returned.
+  successor:
+    format: >-
+      Standard GraphQL { data, errors }. Result types are unions selected with
+      inline fragments; paged results carry `items` plus `pageInfoResponse`.
+    constraint: >-
+      Named fragment spreads are NOT supported, including on nested fields — use
+      inline fragments only.
 
 rate_limiting:
-  documented: false
-  notes: No published rate-limit headers or quota policy located.
+  documented: true
+  detail: rate-limits/wealth-x-rate-limits.yml
+  summary: >-
+    Per-service limits published for the Altrata platform (Profile 2/s, Events
+    2/s, Matching 100/s burst 50, Relationship 100/s burst 50); 429 on both rate
+    and daily-quota exhaustion. No limits published for the legacy Connect API.
+  response_headers: >-
+    None documented. RateLimit-Policy / -Limit / -Remaining / -Reset were
+    observed only on the MCP endpoint.
 
 versioning:
   scheme: uri-path
@@ -77,3 +206,14 @@ versioning:
 
 errors:
   detail: errors/wealth-x-problem-types.yml
+  summary: >-
+    Legacy: bare HTTP status codes. Successor: typed GraphQL union members plus
+    an `errorType` discriminator (unauthorized | deprecated | error). No RFC
+    9457.
+
+deprecation:
+  detail: lifecycle/wealth-x-lifecycle.yml
+  summary: >-
+    Signalled in-band as a GraphQL error block with errorType `deprecated`, never
+    as an RFC 8594 Sunset/Deprecation header. Altrata publishes debug hooks that
+    let a client trigger both a deprecation and a permission error on demand.

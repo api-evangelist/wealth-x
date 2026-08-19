@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wealth-X Connect Dossiers Reference API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "username",
+      "value": "{{username}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reference",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the last (highest) dossier ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/lastdossierid",
+            "params": [
+              {
+                "name": "dossierType",
+                "value": "",
+                "type": "query",
+                "description": "Type of dossier (e.g. person, company)."
+              }
+            ]
+          },
+          "docs": "Return the most recent dossier ID for the given dossier type, used to bound incremental syncs."
+        },
+        {
+          "info": {
+            "name": "List countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/countries"
+          },
+          "docs": "Return the list of countries and their IDs used in search criteria."
+        },
+        {
+          "info": {
+            "name": "List states for a country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/countries/:countryId/states",
+            "params": [
+              {
+                "name": "countryId",
+                "value": "",
+                "type": "path",
+                "description": "Numeric country identifier."
+              }
+            ]
+          },
+          "docs": "Return the list of states/regions and their IDs for a given country (e.g. countryId 1 for the US)."
+        },
+        {
+          "info": {
+            "name": "List industry types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/industrytypes"
+          },
+          "docs": "Return the list of industry types and their IDs used in search criteria."
+        },
+        {
+          "info": {
+            "name": "List positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/positions"
+          },
+          "docs": "Return the list of career positions/titles used in search criteria."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

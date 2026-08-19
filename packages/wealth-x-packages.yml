@@ -1,0 +1,59 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  Registry searches of npm (registry.npmjs.org, plus keyword search for
+  "altrata" and "wealthx"), PyPI, and the GitHub Search API, together with the
+  Wealth-X API docs (developers.wealthx.com) and the Altrata developer docs
+  (docs.altrata.com). No first-party client library was found on any registry.
+description: >-
+  Neither Wealth-X nor its parent Altrata publishes an official client library
+  on any package registry. The legacy Wealth-X Connect REST API is distributed
+  as a Postman collection only; the successor Altrata GraphQL platform is
+  documented with raw curl / Node.js `request` snippets on
+  docs.altrata.com/service-user-credentials and offers no packaged SDK.
+package_count: 0
+official_package_count: 0
+packages: []
+negative_findings:
+  - registry: npm
+    query: registry.npmjs.org/altrata, /wealthx, /wealth-x, /@altrata%2Fmcp, /@altrata%2Fsdk, /altrata-mcp
+    status: 404
+    note: No package published under the Altrata or Wealth-X name.
+  - registry: npm
+    query: registry.npmjs.org/-/v1/search?text=altrata
+    status: 200
+    note: Zero results.
+  - registry: pypi
+    query: pypi.org/pypi/altrata/json, /wealthx/json, /wealth-x/json
+    status: 404
+    note: No package published.
+  - registry: github
+    query: api.github.com/orgs/altrata
+    status: 404
+    note: >-
+      No GitHub organization exists for Altrata or Wealth-X. A repository search
+      returns only unrelated third-party and student projects.
+excluded_false_positives:
+  - name: '@wealthx/shadcn'
+    version: 1.9.9
+    published: '2026-08-14'
+    reason: >-
+      Published by an unrelated company. The scope describes a shadcn/ui
+      component library for a product named "WealthX" and has no connection to
+      Wealth-X (Altrata) wealth intelligence. NOT attributed to this provider.
+  - name: '@wealthx/borrow-capacity-lib'
+    version: 2.1.12
+    published: '2026-05-06'
+    reason: >-
+      Same unrelated "WealthX" npm scope — a borrow-capacity calculation
+      library. NOT attributed to this provider.
+  - name: '@krypto-wealth/x-randomvalues'
+    version: 7.8.2
+    published: '2022-06-14'
+    reason: Unrelated crypto polyfill package matched only on the substring "wealth-x".
+distribution:
+  postman_collection: https://developers.wealthx.com/api/Wealth-X%20API%20Samples.postman_collection.json
+  salesforce_app: >-
+    Altrata ships a native Salesforce managed package (docs.altrata.com/salesforce-app),
+    installed from Salesforce rather than a language package registry, so it has
+    no registry metadata endpoint and no version/published date to record here.

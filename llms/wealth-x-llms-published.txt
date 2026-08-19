@@ -1,0 +1,69 @@
+# Altrata
+
+> Altrata is the definitive leader in global wealth intelligence, professional relationship mapping, and affluent market dynamics. Leading commercial, philanthropic, and educational institutions rely on Altrata to identify exceptional people, uncover strategic relationships, and make data-driven decisions that fuel organizational growth.
+
+Altrata transforms complex data into actionable insights through high-quality data streams, predictive analytics, and strategic relationship models. The platform covers people profiles, company data, and relationship connections spanning global markets. Altrata is a subsidiary of Delinian and is SOC 2 certified.
+
+## Products
+
+- [BoardEx](https://altrata.com/products/boardex): Global corporate leadership and board relationship data, mapping connections among executives and directors worldwide.
+- [WealthEngine](https://altrata.com/products/wealthengine): Wealth screening and ratings platform for identifying and prioritizing high-net-worth prospects.
+- [Wealth-X](https://altrata.com/products/wealth-x): Intelligence on ultra-high-net-worth (UHNW) individuals including biographical, financial, and lifestyle data.
+- [RelSci](https://altrata.com/products/relsci): Relationship capital platform that maps paths to key decision-makers through your organization's existing network.
+- [BoardRoom Insiders](https://altrata.com/products/boardroom-insiders): Executive profiles and C-suite intelligence for enterprise sales and account-based marketing.
+- [Executive & Company Data](https://altrata.com/products/executive-company-data): Broad dataset of executive profiles and company information for research and modeling.
+- [Salesforce App](https://altrata.com/salesforce-app): Native Salesforce integration surfacing Altrata intelligence directly within CRM workflows.
+
+## Solutions by Use Case
+
+- [Client Acquisition & Marketing](https://altrata.com/client-acquisition-marketing): Identify and engage high-value prospects using wealth and relationship data to close larger deals faster.
+- [Dealmaking & Private Equity](https://altrata.com/dealmaking-private-equity): Evaluate deal targets, track market trends, and assess investment risk with predictive analytics.
+- [Fundraising & Advocacy](https://altrata.com/fundraising-advocacy): Identify high-potential donors, screen alumni and prospect pools, and cultivate major gifts.
+- [Research & Data Modeling](https://altrata.com/research-data-modeling): Conduct market research and scenario planning using robust, structured data.
+- [Executive Search & Talent Acquisition](https://altrata.com/executive-search-talent-acquisition): Identify candidates who match skills, culture, and strategic fit across global leadership pools.
+- [Risk Mitigation & Know Your Customer](https://altrata.com/risk-mitigation-know-your-customer): Support compliance, background checks, and KYC processes with verified individual and company data.
+
+## Solutions by Industry
+
+- [Nonprofits](https://altrata.com/nonprofits)
+- [Education](https://altrata.com/education)
+- [Healthcare](https://altrata.com/healthcare)
+- [Retail Banking and Wealth Management](https://altrata.com/retail-banking-and-wealth-management)
+- [Luxury](https://altrata.com/luxury)
+
+## Platform Capabilities
+
+- [Platform Overview](https://altrata.com/platform): Global coverage, strategic relationship mapping, predictive analytics, and actionable insights on wealthy and well-connected individuals.
+- [Partnerships](https://altrata.com/our-partnerships): Data accessible via Salesforce, Snowflake, Databricks, RelPro, and other ecosystem partners.
+- [Donor Prospect Research](https://altrata.com/donor-prospect-research): Specialized tools for identifying and prioritizing major gift prospects.
+- [Wealth Screening](https://altrata.com/wealth-screening): Screening capabilities to rate and rank individuals by estimated wealth and philanthropic capacity.
+
+## Resources
+
+- [All Resources](https://altrata.com/resources)
+- [Articles](https://altrata.com/resources/types/articles): Thought leadership and how-to content on wealth intelligence, HNW prospecting, and relationship-driven growth.
+- [Reports](https://altrata.com/resources/types/reports): Original research including the annual Billionaire Census and global wealth studies.
+- [Case Studies](https://altrata.com/resources/types/case-studies): Customer stories across private equity, nonprofits, financial services, and education.
+- [Guides](https://altrata.com/resources/types/guides): Practical guides on donor research, executive search, and wealth screening best practices.
+- [Webinars](https://altrata.com/resources/types/webinar)
+- [Altrata Fundraising Academy](https://altrata.com/altrata-fundraising-academy): Educational resources for nonprofit and advancement professionals.
+- [Executive Insight Newsletter](https://altrata.com/executive-insight)
+- [Inside Wealth Newsletter](https://altrata.com/inside-wealth)
+
+## Notable Reports & Articles
+
+- [Billionaire Census 2025](https://altrata.com/reports/billionaire-census-2025): Annual flagship report on the global billionaire population, wealth distribution, and trends.
+- [Investable Assets of the Global Wealthy](https://altrata.com/reports/investable-assets-of-the-global-wealthy): Analysis of liquid and investable assets held by UHNW and HNW individuals globally.
+- [World Ultra Wealth Report 2025](https://altrata.com/reports/world-ultra-wealth-report-2025): Analysis of ultra high net worth individuals globally powered by Altrata's proprietary wealth insights.
+- [What is Relationship Mapping?](https://altrata.com/articles/what-is-relationship-mapping): A guide on Relationship Mapping - the process of 
+diagramming connections between individuals, organizations, and institutions to reveal the influence, access, and potential touchpoints within a network.
+- [Advanced Wealth Screening Tools for Fundraising: From Data to Donor Engagement ](https://altrata.com/articles/advanced-wealth-screening-tools-for-fundraising): A comprehensive guide for nonprofit fundraisers on how to leverage advanced tools to drastically improve fundraising outcomes despite headwinds.
+
+
+## Company
+
+- [About Altrata](https://altrata.com/about-us): Altrata is headquartered globally as part of Delinian. The company is the result of combining BoardEx, WealthEngine, Wealth-X, RelSci, and BoardRoom Insiders under a unified intelligence platform.
+- [Careers](https://altrata.com/careers)
+- [Privacy Policy](https://altrata.com/privacy-policy)
+- [Privacy Promise](https://altrata.com/altratas-privacy-promise)
+- [Terms of Use](https://altrata.com/terms-of-use)

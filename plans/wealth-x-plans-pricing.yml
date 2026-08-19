@@ -1,0 +1,102 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.altrata.com/data-packages-and-subscription-entitlements
+description: >-
+  Wealth-X and its parent Altrata publish NO prices. wealthx.com/pricing and
+  altrata.com/pricing both return HTTP 404, and the Wealth-X API product page
+  (wealthx.com/products/api) routes every visitor to "Request a Demo". What IS
+  published is the entitlement model: named product subscriptions and the data
+  packages each one includes, which is what determines the fields an API caller
+  actually receives. Those tiers are recorded here WITHOUT prices, because no
+  price is published for any of them.
+pricing_model: enterprise-quote
+public_prices: false
+currency: null
+plan_count: 5
+plans:
+  - name: Account
+    price: null
+    currency: null
+    billing_period: null
+    included_packages: [Core, Executive Insights]
+    quota: null
+    overage: null
+    note: Price not published; quoted by Altrata sales.
+  - name: Buyer
+    price: null
+    currency: null
+    billing_period: null
+    included_packages: [Core, Wealth Insights]
+    quota: null
+    overage: null
+    note: >-
+      The Wealth Insights package — wealth category, assets, wealth analysis,
+      family details, private foundations, family offices — is the Wealth-X
+      dataset inside the unified Altrata model. Price not published.
+  - name: Investor
+    price: null
+    currency: null
+    billing_period: null
+    included_packages: [Core, Executive Insights, Private Equity & M&A]
+    quota: null
+    overage: null
+    note: Price not published; quoted by Altrata sales.
+  - name: Donor
+    price: null
+    currency: null
+    billing_period: null
+    included_packages: [Core, Philanthropy & Political Donations]
+    quota: null
+    overage: null
+    note: Price not published; quoted by Altrata sales.
+  - name: Exec
+    price: null
+    currency: null
+    billing_period: null
+    included_packages: [Core, Executive Insights]
+    quota: null
+    overage: null
+    note: Price not published; quoted by Altrata sales.
+data_packages:
+  - name: Core
+    availability: Included in all subscriptions (not licensable separately)
+    contents: >-
+      Foundational person identity/demographics (name, age, gender, DOB, role,
+      address, education, interests, achievements, email, nationality,
+      birthplace, relationship status, earning indicator) and organization
+      reference data (name, type, sector, address, revenue & market cap,
+      leadership & board structures, ticker).
+  - name: Executive Insights
+    availability: Included with Account, Exec, Investor; add-on to other subscriptions
+    contents: >-
+      Board memberships, time on board, index constituents, corporate
+      experience, % women on board, organization financials, role location &
+      department, corporate hierarchy, diversity/membership associations,
+      corporate advisors & suppliers.
+  - name: Wealth Insights
+    availability: Included with Buyer; add-on to other subscriptions
+    contents: Wealth category, assets, wealth analysis, family details, private foundations, family offices.
+  - name: Philanthropy & Political Donations
+    availability: Included with Donor; add-on to other subscriptions
+    contents: Charitable donations, political donations, wealth category.
+  - name: Private Equity & M&A
+    availability: Included with Investor; add-on to other subscriptions
+    contents: Private equity and M&A data points.
+entitlement_behavior:
+  note: >-
+    Verbatim from the docs: "Your organization's subscription determines which
+    entities and fields you receive in APIs and data feeds. If you see fewer
+    fields than are documented, this is expected and controlled by your product
+    entitlements." Fields outside the entitlement return an error block with
+    errorType `unauthorized` while the rest of the response payload stays valid.
+  source: https://docs.altrata.com/data-packages-and-subscription-entitlements
+evidence:
+  - url: https://wealthx.com/pricing
+    status: 404
+  - url: https://altrata.com/pricing
+    status: 404
+  - url: https://wealthx.com/products/api
+    status: 200
+    note: Product page; no pricing, CTA is "Request a Demo".
+  - url: https://docs.altrata.com/data-packages-and-subscription-entitlements
+    status: 200

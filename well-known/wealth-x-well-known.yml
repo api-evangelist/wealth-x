@@ -1,11 +1,39 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: probed
-source: live probe of /.well-known/ paths on Wealth-X hosts
+source: live probe of /.well-known/ paths on every Wealth-X and Altrata host
 notes: >-
-  No /.well-known/ discovery documents are published on any Wealth-X host.
-  All probed paths returned 404 (connect./wealthx.com) or 403 (developers.).
-  Absence is valid, recorded data — no WellKnown catalog is advertised.
+  Round 1 (2026-07-21) probed only the wealthx.com hosts and found nothing — every
+  path 404d or 403d, so no WellKnown pointer was emitted. Round 2 (2026-08-14)
+  extended the probe to the parent Altrata platform hosts and found REAL
+  documents: mcp.altrata.com serves both RFC 9728 OAuth protected-resource
+  metadata and RFC 8414 authorization-server metadata as valid JSON at HTTP 200.
+  Those two documents are saved verbatim beside this index and are what justifies
+  the WellKnown pointer. No security.txt, api-catalog, ai-plugin.json, openid-
+  configuration or agent card is served on any host.
 hosts:
+  - host: https://mcp.altrata.com
+    owner: Altrata (parent platform — see mcp/wealth-x-mcp.yml for the ownership justification)
+    documents:
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: application/json; charset=utf-8
+        file: wealth-x-oauth-protected-resource.json
+        real_document: true
+      - path: /.well-known/oauth-protected-resource/mcp
+        status: 200
+        content_type: application/json; charset=utf-8
+        real_document: true
+        note: Identical body to /.well-known/oauth-protected-resource; the path named in the WWW-Authenticate challenge.
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json; charset=utf-8
+        file: wealth-x-oauth-authorization-server.json
+        real_document: true
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+        note: Not probed separately; the host returns "Cannot GET" for every unrouted path.
   - host: https://connect.wealthx.com
     documents:
       - path: /.well-known/security.txt
@@ -18,9 +46,16 @@ hosts:
         status: 404
       - path: /.well-known/ai-plugin.json
         status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
   - host: https://wealthx.com
     documents:
       - path: /.well-known/security.txt
+        status: 404
+        note: Soft 404 — the site returns a 404 status with the full HTML error page.
+      - path: /security.txt
         status: 404
       - path: /.well-known/openid-configuration
         status: 404
@@ -30,6 +65,19 @@ hosts:
         status: 404
       - path: /.well-known/ai-plugin.json
         status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 200
+        content_type: text/plain
+        file: ../llms/wealth-x-llms-published.txt
+        real_document: true
+        note: >-
+          Not a /.well-known/ path, but a real machine-readable discovery
+          document served from Wealth-X's own domain. Recorded here for
+          completeness; the artifact lives in llms/.
   - host: https://developers.wealthx.com
     documents:
       - path: /.well-known/security.txt
@@ -38,7 +86,25 @@ hosts:
         status: 403
       - path: /.well-known/oauth-authorization-server
         status: 403
-      - path: /.well-known/api-catalog
+      - path: /.well-known/agent-card.json
         status: 403
-      - path: /.well-known/ai-plugin.json
-        status: 403
+    note: >-
+      The developer docs host is an S3/CloudFront origin that returns HTTP 403
+      (application/xml AccessDenied) for every path it does not have an object
+      for, so a 403 here is an absence, not a block.
+  - host: https://altrata.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /security.txt
+        status: 404
+      - path: /llms.txt
+        status: 200
+        content_type: text/plain
+        real_document: true
+        note: Byte-identical to the llms.txt served from wealthx.com.
+summary:
+  real_documents_found: 3
+  well_known_pointer_justified: true
+  security_txt_found: false
+  agent_card_found: false

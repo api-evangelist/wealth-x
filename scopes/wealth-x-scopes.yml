@@ -1,0 +1,68 @@
+generated: '2026-08-14'
+method: probed
+source: https://mcp.altrata.com/.well-known/oauth-protected-resource
+description: >-
+  OAuth scopes for the Wealth-X / Altrata surfaces. The legacy Wealth-X Connect
+  REST API uses three static API-key headers and declares no OAuth at all, so it
+  has no scopes. The successor Altrata platform runs two distinct OAuth flows,
+  and only one of them publishes a scope list anonymously.
+surfaces:
+  - name: Altrata MCP server
+    endpoint: https://mcp.altrata.com/mcp
+    flow: authorization_code + PKCE (S256)
+    authorization_server: https://mcp.altrata.com
+    authorization_endpoint: https://serviceauth.altrata.com/oauth2/authorize
+    token_endpoint: https://serviceauth.altrata.com/oauth2/token
+    scopes_published: true
+    scopes:
+      - name: openid
+        description: >-
+          OpenID Connect subject identity. Advertised in the protected-resource
+          metadata and in the WWW-Authenticate challenge on HTTP 401.
+        source: probed
+      - name: email
+        description: >-
+          Access to the authenticated user's email claim. Advertised in the
+          protected-resource metadata and in the WWW-Authenticate challenge.
+        source: probed
+    note: >-
+      Only the two standard OIDC identity scopes are advertised. Altrata does
+      not publish resource-level scopes (per-dataset or per-tool); what a caller
+      may read is decided by their subscription entitlement, not by an OAuth
+      scope. See plans/wealth-x-plans-pricing.yml.
+  - name: Altrata GraphQL platform APIs
+    endpoint: https://api.auth.altrata.com/oauth2/token
+    flow: client_credentials
+    scopes_published: false
+    scopes: []
+    note: >-
+      docs.altrata.com/service-user-credentials documents a client_credentials
+      token request that carries an `x-api-key` header plus HTTP Basic service
+      user credentials. No `scope` parameter and no scope list are documented,
+      and the token endpoint did not answer an anonymous probe.
+    docs: https://docs.altrata.com/service-user-credentials
+  - name: Wealth-X Connect REST API (legacy)
+    endpoint: https://connect.wealthx.com/rest/v1
+    flow: none
+    scopes_published: false
+    scopes: []
+    note: Static `username`, `password` and `apikey` request headers. No OAuth, no scopes.
+authorization_model:
+  type: entitlement-based
+  description: >-
+    Access is governed by subscription entitlements rather than OAuth scopes.
+    Requesting a field outside the entitlement returns an error block with
+    errorType `unauthorized` while the rest of the response payload remains
+    valid and consumable.
+  source: https://docs.altrata.com/errors-warnings-and-limits
+evidence:
+  - url: https://mcp.altrata.com/.well-known/oauth-protected-resource
+    status: 200
+  - url: https://mcp.altrata.com/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://mcp.altrata.com/mcp
+    status: 401
+    note: 'WWW-Authenticate: Bearer realm="Altrata MCP" ... scope="openid email"'
+  - url: https://api.auth.altrata.com/oauth2/token
+    status: 0
+    note: No anonymous response.

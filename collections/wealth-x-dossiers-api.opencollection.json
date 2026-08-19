@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wealth-X Connect Dossiers API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "username",
+      "value": "{{username}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dossiers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a single dossier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/dossiers/:dossierId",
+            "params": [
+              {
+                "name": "dossierId",
+                "value": "",
+                "type": "path",
+                "description": "Numeric identifier of the dossier."
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "query",
+                "description": "Shape of the returned record."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to return when view=selective (e.g. netWorth, knownAssociates)."
+              }
+            ]
+          },
+          "docs": "Retrieve a single Wealth-X dossier by its numeric dossier ID. The response can be shaped with the view parameter (stub vs selective) and narrowed to specific fields."
+        },
+        {
+          "info": {
+            "name": "Bulk-download dossiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.wealthx.com/rest/v1/alldossiers",
+            "params": [
+              {
+                "name": "dossierIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of dossier IDs to download."
+              },
+              {
+                "name": "dossierType",
+                "value": "",
+                "type": "query",
+                "description": "Type of dossier (e.g. person, company)."
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "query",
+                "description": "Shape of the returned records (stub / selective)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to return."
+              },
+              {
+                "name": "fromIndex",
+                "value": "",
+                "type": "query",
+                "description": "Start index for batch/pagination retrieval."
+              },
+              {
+                "name": "toIndex",
+                "value": "",
+                "type": "query",
+                "description": "End index for batch retrieval."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Page size for pagination retrieval."
+              },
+              {
+                "name": "networthMin",
+                "value": "",
+                "type": "query",
+                "description": "Minimum net worth filter."
+              },
+              {
+                "name": "networthMax",
+                "value": "",
+                "type": "query",
+                "description": "Maximum net worth filter."
+              },
+              {
+                "name": "lastModifiedFrom",
+                "value": "",
+                "type": "query",
+                "description": "Return dossiers modified on or after this date."
+              },
+              {
+                "name": "lastModifiedTo",
+                "value": "",
+                "type": "query",
+                "description": "Return dossiers modified on or before this date."
+              },
+              {
+                "name": "idOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only dossier IDs rather than full records."
+              }
+            ]
+          },
+          "docs": "Bulk retrieval of dossiers, selectable by explicit dossier IDs, by index/batch ranges, by net-worth band, or by last-modified window for incremental synchronisation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

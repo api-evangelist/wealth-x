@@ -1,21 +1,126 @@
-generated: '2026-07-21'
-method: derived
-source: openapi/wealth-x-connect-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.altrata.com/altrata-migration,
+  https://docs.altrata.com/breaking-changes,
+  https://docs.altrata.com/errors-warnings-and-limits,
+  https://docs.altrata.com/developer-changelog, and
+  openapi/wealth-x-connect-openapi.yml
 description: >-
-  Lifecycle profile for the Wealth-X Connect API. Versioning is derived from the
-  URI path. No published deprecation policy, SLA, or status page was located
-  (status.wealthx.com does not resolve), so no StatusPage or Deprecation pointer
-  is emitted.
+  The single most important lifecycle fact about this provider: the Wealth-X
+  Connect REST API is a LEGACY surface. Altrata's own developer documentation
+  states it "is committed to ensuring a smooth and well supported transition for
+  customers migrating from legacy data products — including relationship
+  science, boardex, and wealth x — to the unified altrata platform", and
+  publishes a "Wealth-X to Altrata API mapping document" that "details
+  differences in endpoint structure, entity modeling, identifiers, and response
+  schemas". Wealth-X customers are being moved from
+  https://connect.wealthx.com/rest/v1 (REST) to the Altrata GraphQL services.
 versioning:
   scheme: uri-path
-  current: v1
-  base_path: /rest/v1
-  docs: https://developers.wealthx.com/api/main.html
+  legacy:
+    api: Wealth-X Connect REST API
+    current: v1
+    base_path: /rest/v1
+    docs: https://developers.wealthx.com/api/main.html
+  successor:
+    api: Altrata platform GraphQL APIs
+    current: v1
+    base_path: /v1/graphql
+    docs: https://docs.altrata.com/urls
+  note: >-
+    Neither surface publishes a semantic API version. On the Altrata platform,
+    change is communicated per-field through the Developer Changelog and, at
+    runtime, through in-band `deprecated` error blocks.
+succession:
+  status: legacy-with-documented-migration-path
+  from: Wealth-X Connect REST API (https://connect.wealthx.com/rest/v1)
+  to:
+    - https://profile.altrata.com/v1/graphql/
+    - https://relationships.altrata.com/v1/graphql/
+    - https://events.altrata.com/v1/graphql
+    - https://matching.altrata.com/v1/graphql
+  migration_guide: https://docs.altrata.com/altrata-migration
+  mapping_document: Wealth-X to Altrata API mapping document (linked from the migration page)
+  identifier_continuity: >-
+    The Altrata Matching API accepts `wxPersonId` — the Wealth-X person
+    identifier — as a first-class match input alongside altrataId, bxPersonId
+    (BoardEx), rsPersonId (RelSci), wePersonId (WealthEngine) and briPersonId,
+    so legacy Wealth-X IDs resolve into the unified model.
+  source: https://docs.altrata.com/api
+  sunset_date: null
+  sunset_note: >-
+    No sunset or end-of-life date is published for the Wealth-X Connect API.
+    developers.wealthx.com is still live and still serves the Postman collection.
 deprecation:
-  policy_url: null
+  policy_url: https://docs.altrata.com/errors-warnings-and-limits
+  policy_published: true
+  mechanism: in-band GraphQL error block
+  detail: >-
+    On the Altrata platform, "any query which uses a deprecated field will result
+    in a response with an error block, with errorType set to deprecated. The
+    message field will provide an explanation of the deprecation and an
+    alternative field to use, if available. The response payload is still valid
+    and may be consumed." Deprecated fields "will be removed in future releases",
+    and callers are told to remove affected fields from their queries.
+  testability: >-
+    Altrata publishes a deliberate test hook — `query MyQuery { debug {
+    deprecatedExample } }` triggers a deprecated error, and `query MyQuery {
+    debug { permissionDeniedExample } }` triggers an unauthorized error — so a
+    client can exercise its deprecation and permission handling before it hits a
+    real one. That is unusually good practice and rare in this catalog.
   sunset_header: false
-  notes: No RFC 8594 Sunset/Deprecation header support or deprecation policy documented.
+  rfc8594: false
+  notes: >-
+    No RFC 8594 Sunset or Deprecation HTTP response header on either surface;
+    deprecation is signalled in the GraphQL response body, not in headers.
+breaking_changes:
+  policy_url: https://docs.altrata.com/breaking-changes
+  policy_published: true
+  format: >-
+    A dedicated Breaking Changes page, one dated section per change, each with
+    an overview, an audience statement, a "what is changing and why" section,
+    impacted products, a data-model change detail table, and before/after SQL.
+  recent:
+    - date: '2026-07-30'
+      title: Committee role changes
+      migration_required: true
+      impacted: [Data Feed sFTP, Data Feed Snowflake, Data Feed Delta Sharing, Data Feed S3]
+    - date: '2026-01-20'
+      title: Role alignment update
+      migration_required: true
+      impacted: [Data Feed]
+changelog:
+  url: https://docs.altrata.com/developer-changelog
+  detail: changelog/wealth-x-changelog.yml
 sla:
   url: null
+  published: false
+  note: No SLA, uptime commitment or support-response target is published on any Wealth-X or Altrata surface.
 status_page: null
+status_page_note: >-
+  No status page exists. status.wealthx.com and status.altrata.com do not
+  resolve; there is no statuspage.io / instatus / better-stack instance and no
+  status link in the docs. No StatusPage pointer is emitted.
+support:
+  client_success_email: clientsuccess@altrata.com
+  contact_page: https://altrata.com/contact-us
+  note: >-
+    Credentials and access are provisioned by a client success representative,
+    not self-serve. See docs.altrata.com/service-user-credentials.
 deprecated_operations: []
+deprecated_operations_note: >-
+  No operation in any captured Wealth-X OpenAPI carries `deprecated: true`.
+evidence:
+  - url: https://docs.altrata.com/altrata-migration
+    status: 200
+  - url: https://docs.altrata.com/breaking-changes
+    status: 200
+  - url: https://docs.altrata.com/errors-warnings-and-limits
+    status: 200
+  - url: https://status.wealthx.com/
+    status: 0
+  - url: https://status.altrata.com/
+    status: 0
+  - url: https://developers.wealthx.com/api/main.html
+    status: 200

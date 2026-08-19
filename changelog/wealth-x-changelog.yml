@@ -1,0 +1,112 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.altrata.com/developer-changelog
+description: >-
+  Wealth-X publishes no changelog for the legacy Connect REST API. Its parent
+  Altrata publishes a Developer Changelog and a separate Breaking Changes page
+  on the unified platform docs that docs.altrata.com/altrata-migration names as
+  the migration target for Wealth-X customers. Both are recorded here.
+changelog_url: https://docs.altrata.com/developer-changelog
+breaking_changes_url: https://docs.altrata.com/breaking-changes
+scheme: dated-entries
+versioning: >-
+  URI path version on every GraphQL service (/v1/graphql). No semantic version
+  is published for the API itself; change is communicated per-field through the
+  changelog, and through in-band `deprecated` error blocks on the response.
+page_last_updated: '2026-07-15'
+current_version: v1
+entries:
+  - date: '2026-07-30'
+    source: https://docs.altrata.com/breaking-changes
+    title: Committee role changes
+    breaking: true
+    surfaces: [Data Feed (sFTP, Snowflake, Delta Sharing, S3)]
+    highlights:
+      - >-
+        Altrata role ontology changed so a single disclosed committee can carry
+        multiple structured committee categories.
+      - >-
+        New rolegroupcategory table/view added across the professionalcore and
+        wealthcore schemas; it replaces the deprecated role group column on the
+        roletitlecategory table/view.
+      - >-
+        New role group id foreign key on roletitlecategory, and a new
+        announcement role group id column on announcementroletitlecategory that
+        replaces the deprecated announcement role group column.
+      - Requires migration by data feed customers.
+  - date: '2026-01-20'
+    source: https://docs.altrata.com/breaking-changes
+    title: Role alignment update
+    breaking: true
+    surfaces: [Data Feed]
+    highlights:
+      - >-
+        Separate but concurrent employment and board roles for a given person at
+        a given organization are combined into a single role.
+  - date: '2025-11-17'
+    source: https://docs.altrata.com/developer-changelog
+    title: Charitable donation, political donation and wealth data released to API
+    breaking: false
+    surfaces: [Profile API]
+    additions:
+      - >-
+        New `charitabledonations` query returning id, donorPeople,
+        donorOrganization, recipientOrganization, amount, measurementDate.
+      - >-
+        New `politicaldonations` query returning id, donorPeople,
+        recipientOrganization, recipientPerson,
+        recipientPoliticalPartyOrganization, amount, measurementDate.
+      - >-
+        New `wealthassets` query returning id, owner, name, classification,
+        type, liquidityType, remarks, value, ownershipPercentage,
+        ownershipValue, relatedOrganization, purchaseDate, organizationTicker.
+    highlights:
+      - >-
+        This is the release that brought the Wealth-X-style wealth dataset —
+        net worth, asset composition, charitable giving, political donations —
+        into the unified Altrata Profile API.
+undated_entries:
+  - title: New data points released to Profile API (person paged results)
+    breaking: false
+    surfaces: [Profile API]
+    additions:
+      - personPagedResults extended with hobby/interest data (pursuit, category, name, description).
+      - >-
+        personPagedResults extended with personal relationships (name, type,
+        status) and the individual's current relationshipStatus.
+      - >-
+        personPagedResults extended with net worth detail — totalAssetsFound,
+        estimatedNetWorth, estimatedLiquidAsset, estimatedFamilyNetWorth,
+        estimatedFamilyLiquidAsset, wealthTier.
+    note: Published on the changelog page without its own date heading.
+  - title: Charitable donation, political donation and wealth data released to Data Feed
+    breaking: false
+    surfaces: [Data Feed]
+    additions:
+      - Charitable donation tables (donor person id, donor organization id, recipient organization id).
+      - >-
+        Political donation tables (donor person id, recipient organization id,
+        recipient political party organization id, political donation amount).
+      - >-
+        Wealth asset tables (asset type, asset name, asset purchase date, asset
+        ownership percentage, asset value).
+    note: Published on the changelog page without its own date heading.
+  - title: Additional data points released to Data Feed
+    breaking: false
+    surfaces: [Data Feed]
+    additions:
+      - personalInterest table (interest category, interest name, description).
+      - >-
+        personalNetWorthSummary table (estimated net worth, total assets found,
+        estimated liquid asset, source of wealth).
+      - >-
+        personalRelationship table (relationship type, start date, end date,
+        current/prior status).
+      - personalWealthProfile table (wealth tier).
+    note: Published on the changelog page without its own date heading.
+legacy_surface:
+  api: Wealth-X Connect REST API
+  changelog_url: null
+  note: >-
+    developers.wealthx.com publishes no changelog, release notes, or version
+    history for the Connect API.

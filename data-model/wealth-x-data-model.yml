@@ -1,6 +1,11 @@
-generated: '2026-07-21'
-method: derived
-source: openapi/wealth-x-connect-openapi.yml and the published Wealth-X API Samples Postman collection
+generated: '2026-08-14'
+method: searched
+source: >-
+  openapi/wealth-x-connect-openapi.yml and the published Wealth-X API Samples
+  Postman collection (derived), plus https://docs.altrata.com/profile-api,
+  https://docs.altrata.com/relationship-api, https://docs.altrata.com/events-api,
+  https://docs.altrata.com/api and
+  https://docs.altrata.com/data-packages-and-subscription-entitlements (searched).
 description: >-
   Entity-relationship graph of the Wealth-X Connect API, derived from the
   generated OpenAPI schemas, the search criteria, and the reference-data
@@ -57,3 +62,151 @@ relationships:
     to: Position
     type: belongs_to
     via: position
+
+successor_model:
+  name: Altrata unified data model
+  note: >-
+    docs.altrata.com/altrata-migration states that Wealth-X customers are
+    migrating to the unified Altrata platform, and publishes a "Wealth-X to
+    Altrata API mapping document" covering "differences in endpoint structure,
+    entity modeling, identifiers, and response schemas". The single flat
+    Wealth-X Dossier is replaced by a normalized Person / Organization / Role
+    graph. Entities below are read from the published Altrata API docs and data
+    dictionary index; no schema introspection was possible (GraphQL
+    introspection returns 401/403 anonymously).
+  source: https://docs.altrata.com/profile-api
+  identifiers:
+    format: typed prefixed strings
+    examples:
+      person: 1-per-4518022
+      organization: 1-org-3303587
+    legacy_cross_reference: >-
+      The Matching API accepts wxPersonId (Wealth-X), bxPersonId (BoardEx),
+      rsPersonId (RelSci), wePersonId (WealthEngine), briPersonId (BoardRoom
+      Insiders) and altrataId, so legacy Wealth-X dossier identity resolves into
+      the unified model.
+    source: https://docs.altrata.com/api
+  entities:
+    - name: Person
+      description: An individual profile — the successor to the Wealth-X person dossier.
+      primary_key: id (1-per-<n>)
+      key_fields: [firstName, lastName, name, gender, age, dateOfBirth, nationality, birthplace, relationshipStatus, earningIndicator]
+      queries: [personKeywordSearch, personIdSearch, personBulkIdSearch]
+      note: personBulkIdSearch accepts up to 100 ids per call.
+    - name: Organization
+      description: A company or institution profile.
+      primary_key: id (1-org-<n>)
+      key_fields: [organizationName, organizationType, tickerPrimary, industryPrimary, sectorPrimary, headOfficeAddress, website, dateFounded, latestDailyMarketCapital, latestAnnualMarketRevenue]
+      queries: [organizationKeywordSearch, organizationIdSearch]
+    - name: Role
+      description: An employment or board role held by a Person at an Organization.
+      key_fields: [title, type, startDate, endDate, roleCurrentPriorStatus]
+      accessors: [rolesBoard, rolesEmployment]
+    - name: RoleTitleCategory
+      description: Normalized categorisation of a disclosed role/committee title.
+      note: Subject of the 2026-07-30 breaking change; see changelog/wealth-x-changelog.yml.
+    - name: RoleGroupCategory
+      description: Structured committee categorisation; a disclosed committee may map to several categories.
+      added: '2026-07-30'
+    - name: Education
+      description: A qualification a Person holds from an Organization.
+      key_fields: [qualification, qualificationCategory, startDate, endDate]
+    - name: PersonalWealthProfile
+      description: Wealth tier of an individual. The Wealth-X heartland of the model.
+      key_fields: [wealthTier]
+    - name: PersonalNetWorthSummary
+      description: Net-worth rollup for an individual.
+      key_fields: [estimatedNetWorth, totalAssetsFound, estimatedLiquidAsset, estimatedFamilyNetWorth, estimatedFamilyLiquidAsset, sourceOfWealth]
+    - name: WealthAsset
+      description: A single asset attributed to an individual.
+      primary_key: id
+      key_fields: [name, classification, type, liquidityType, value, ownershipPercentage, ownershipValue, purchaseDate, organizationTicker, remarks]
+      classifications: [alternative assets, cash & others, common stock, private holdings, stock options]
+    - name: CharitableDonation
+      primary_key: id
+      key_fields: [amount, measurementDate]
+      relations: [donorPeople, donorOrganization, recipientOrganization]
+    - name: PoliticalDonation
+      primary_key: id
+      key_fields: [amount, measurementDate]
+      relations: [donorPeople, recipientOrganization, recipientPerson, recipientPoliticalPartyOrganization]
+    - name: PrivateFoundation
+      description: Private foundation associated with an individual or family.
+    - name: PersonalInterest
+      description: Hobby / interest of an individual.
+      key_fields: [pursuit, category, name, description]
+    - name: PersonalRelationship
+      description: Personal (non-professional) relationship between individuals.
+      key_fields: [name, type, status, startDate, endDate]
+    - name: PersonalAddress
+      description: Address associated with an individual.
+    - name: Announcement
+      description: A leadership/organizational event, primarily executive role announcements.
+      key_fields: [eventId, eventText, announcementDateInfo, eventDateInfo, eventPublishedDate, startRoleTitle, endRoleTitle]
+      relations: [personMentions, organizationMentions]
+      queries: [events]
+    - name: Connection
+      description: A relationship edge between people/organizations used for path-finding.
+      queries: [myPathsToPerson, myPathsToOrganization, personNetwork]
+      note: >-
+        Paths are ranked by relevance; 1st-degree = the contact is the target or
+        currently works at the target organization, 2nd-degree = the contact has
+        a relationship with the target or with someone who works there.
+  successor_relationships:
+    - from: Person
+      to: Role
+      type: has_many
+      via: rolesEmployment / rolesBoard
+    - from: Role
+      to: Organization
+      type: belongs_to
+      via: organization
+    - from: Person
+      to: Education
+      type: has_many
+      via: education
+    - from: Person
+      to: WealthAsset
+      type: has_many
+      via: owner
+    - from: Person
+      to: PersonalNetWorthSummary
+      type: has_one
+    - from: Person
+      to: PersonalWealthProfile
+      type: has_one
+    - from: Person
+      to: CharitableDonation
+      type: has_many
+      via: donorPeople
+    - from: Person
+      to: PoliticalDonation
+      type: has_many
+      via: donorPeople
+    - from: Person
+      to: PersonalRelationship
+      type: has_many
+    - from: Person
+      to: Connection
+      type: has_many
+      via: personNetwork
+    - from: Organization
+      to: Role
+      type: has_many
+      via: rolesBoard / rolesEmployment
+    - from: Announcement
+      to: Person
+      type: has_many
+      via: personMentions
+    - from: Announcement
+      to: Organization
+      type: has_many
+      via: organizationMentions
+    - from: WealthAsset
+      to: Organization
+      type: belongs_to
+      via: relatedOrganization
+  entitlement_note: >-
+    Which of these entities and fields a caller actually receives is set by
+    subscription entitlement, not by the query. See
+    plans/wealth-x-plans-pricing.yml.

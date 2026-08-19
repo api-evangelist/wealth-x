@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wealth-X Connect Dossiers Search API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "username",
+      "value": "{{username}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Advanced dossier search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.wealthx.com/rest/v1/dossiers/search/advanced",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search the Wealth-X database with a rich criteria object — keyword, person name, company, geography (country/state/location type), net-worth and total-assets-under-management floors, industry and position, interests/hobbies, education, philanthropy and connection relationships — with sorting and pagination."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

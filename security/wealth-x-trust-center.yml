@@ -1,0 +1,93 @@
+generated: '2026-08-14'
+method: searched
+source: https://altrata.com/altratas-privacy-promise
+description: >-
+  Wealth-X publishes no security or trust page of its own, and
+  probe-security-programs.py found no security.txt, bug bounty, or trust center
+  on any wealthx.com host. Its parent Altrata publishes a named compliance
+  posture on "Altrata's Privacy Promise", and the llms.txt served from
+  Wealth-X's own domain (https://wealthx.com/llms.txt) states plainly that
+  "Altrata is a subsidiary of Delinian and is SOC 2 certified."
+trust_center_url: https://altrata.com/altratas-privacy-promise
+public_portal: false
+portal_note: >-
+  There is no self-serve trust portal (no Vanta/Drata/SafeBase instance;
+  trust.altrata.com does not resolve). Audit reports are gated: "we ... make our
+  audit reports – along with our full collection of security documentation –
+  available to clients and prospects upon request."
+certifications:
+  - name: SOC 2
+    type: attestation
+    status: claimed
+    verified_by_us: false
+    evidence: >-
+      "We regularly invest in independent auditors to assess our security
+      environment as part of our SOC2 attestation." and "On an annual basis, an
+      independent expert third party auditor assesses our security environment
+      in detail as part of our commitments to maintain our SOC2 attestation.
+      Please contact a member of our commercial team for a copy of our SOC-2
+      report."
+    source: https://altrata.com/altratas-privacy-promise
+    report_access: on request via the Altrata commercial team
+  - name: CCPA Validation
+    type: independent validation
+    status: achieved
+    verified_by_us: false
+    evidence: >-
+      "Altrata has achieved independent CCPA Validation confirming that our
+      privacy practices meet established CCPA Controls. Following a detailed
+      assessment and evidence review..." A downloadable "Altrata Inc. CCPA
+      Validation Findings Letter" is published on the page.
+    source: https://altrata.com/altratas-privacy-promise
+regulatory_compliance:
+  - regime: GDPR
+    posture: >-
+      Data controller relying on legitimate interests as its Article 6(1) lawful
+      basis, with documented Legitimate Interest Assessments and Standard
+      Contractual Clauses where applicable.
+    source: https://altrata.com/altratas-privacy-promise
+  - regime: CCPA / CPRA
+    posture: >-
+      Compliant, with a published "Do Not Sell" rights process and independent
+      CCPA Validation.
+    source: https://altrata.com/altratas-privacy-promise
+  - regime: China PIPL
+    posture: Named as a standard Altrata states it is compliant with.
+    source: https://altrata.com/altratas-privacy-promise
+  - regime: US state data broker registration
+    posture: >-
+      Altrata holds current data broker registrations in California, Oregon,
+      Texas and Vermont — material for a provider whose product is third-party
+      personal data on private individuals.
+    source: https://altrata.com/altratas-privacy-promise
+security_practices:
+  - practice: Independent annual third-party security assessment
+    source: https://altrata.com/altratas-privacy-promise
+  - practice: Continuous penetration testing
+    source: https://altrata.com/altratas-privacy-promise
+  - practice: Patch and vulnerability management process
+    source: https://altrata.com/altratas-privacy-promise
+  - practice: Documented data deletion policy
+    source: https://altrata.com/altratas-privacy-promise
+  - practice: Security-by-design process and personnel security training
+    source: https://altrata.com/altratas-privacy-promise
+gaps:
+  - No published security.txt on wealthx.com, connect.wealthx.com or altrata.com (all 404).
+  - No vulnerability disclosure policy or bug bounty program found.
+  - No self-serve trust portal; every artifact is gated behind a sales conversation.
+  - No compliance page on wealthx.com itself — the entire posture is published under the parent brand.
+evidence:
+  - url: https://altrata.com/altratas-privacy-promise
+    status: 200
+  - url: https://wealthx.com/llms.txt
+    status: 200
+    note: '"Altrata is a subsidiary of Delinian and is SOC 2 certified." — served from Wealth-X''s own domain.'
+  - url: https://altrata.com/.well-known/security.txt
+    status: 404
+  - url: https://wealthx.com/.well-known/security.txt
+    status: 404
+  - url: https://trust.altrata.com/
+    status: 0
+    note: Host does not resolve.
+  - url: https://altrata.com/compliance
+    status: 404

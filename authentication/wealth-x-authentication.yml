@@ -1,30 +1,130 @@
-generated: '2026-07-21'
-method: derived
-source: openapi/wealth-x-connect-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.altrata.com/service-user-credentials and
+  https://mcp.altrata.com/.well-known/oauth-authorization-server (searched/probed);
+  openapi/wealth-x-*-openapi.yml (derived).
+docs: https://docs.altrata.com/service-user-credentials
+description: >-
+  Three distinct authentication models across the Wealth-X / Altrata estate. The
+  legacy Wealth-X Connect REST API uses three static credential headers. The
+  successor Altrata GraphQL APIs use an OAuth 2.0 client_credentials token
+  exchange that itself requires an API key plus HTTP Basic service credentials.
+  The Altrata MCP server uses OAuth 2.0 authorization_code with PKCE.
 summary:
   types:
   - apiKey
+  - http
+  - oauth2
   api_key_in:
   - header
+  self_serve: false
+  provisioning_note: >-
+    No self-serve signup for any surface. Credentials are issued by email during
+    subscription setup; missing credentials go to clientsuccess@altrata.com or a
+    client success representative.
+
 schemes:
 - name: wealthxUsername
+  surface: Wealth-X Connect REST API (legacy)
   type: apiKey
   in: header
   parameter: username
   description: Wealth-X account username, supplied as a request header.
+  method: derived
   sources:
-  - openapi/wealth-x-connect-openapi.yml
+  - openapi/wealth-x-dossiers-api-openapi.yml
+  - openapi/wealth-x-reference-api-openapi.yml
+  - openapi/wealth-x-search-api-openapi.yml
 - name: wealthxPassword
+  surface: Wealth-X Connect REST API (legacy)
   type: apiKey
   in: header
   parameter: password
   description: Wealth-X account password, supplied as a request header.
+  method: derived
   sources:
-  - openapi/wealth-x-connect-openapi.yml
+  - openapi/wealth-x-dossiers-api-openapi.yml
+  - openapi/wealth-x-reference-api-openapi.yml
+  - openapi/wealth-x-search-api-openapi.yml
 - name: wealthxApiKey
+  surface: Wealth-X Connect REST API (legacy)
   type: apiKey
   in: header
   parameter: apikey
   description: Wealth-X API key, supplied as a request header.
+  method: derived
   sources:
-  - openapi/wealth-x-connect-openapi.yml
+  - openapi/wealth-x-dossiers-api-openapi.yml
+  - openapi/wealth-x-reference-api-openapi.yml
+  - openapi/wealth-x-search-api-openapi.yml
+- name: altrataServiceToken
+  surface: Altrata platform GraphQL APIs
+  type: oauth2
+  flow: clientCredentials
+  token_url: https://api.auth.altrata.com/oauth2/token
+  grant_type_in: query string (?grant_type=client_credentials)
+  description: >-
+    POST to the Altrata token endpoint with an `x-api-key` header carrying the
+    subscription API key and an `Authorization: Basic base64(username:password)`
+    header carrying the service user credentials. The returned access token is
+    then presented on the GraphQL call.
+  method: searched
+  caution: >-
+    The Altrata service-user username is NOT the account email — it is the
+    username sent during initial password setup.
+  scopes: []
+  scopes_note: No scope parameter or scope list is documented for this flow.
+  source: https://docs.altrata.com/service-user-credentials
+- name: altrataApiKey
+  surface: Altrata platform GraphQL APIs
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: >-
+    Subscription API key, required on the token request in addition to the
+    service user's HTTP Basic credentials. Also the key used by the Altrata
+    Salesforce App.
+  method: searched
+  source: https://docs.altrata.com/service-user-credentials
+- name: altrataBasic
+  surface: Altrata platform GraphQL APIs (token request)
+  type: http
+  scheme: basic
+  description: base64(serviceUsername:servicePassword) on the token request.
+  method: searched
+  source: https://docs.altrata.com/service-user-credentials
+- name: altrataMcpOAuth
+  surface: Altrata MCP server (https://mcp.altrata.com/mcp)
+  type: oauth2
+  flow: authorizationCode
+  pkce: S256
+  issuer: https://mcp.altrata.com
+  authorization_url: https://serviceauth.altrata.com/oauth2/authorize
+  token_url: https://serviceauth.altrata.com/oauth2/token
+  jwks_uri: https://cognito-idp.us-east-2.amazonaws.com/us-east-2_Pe8aMS8JG/.well-known/jwks.json
+  client_id: 21saqug474pjtpong1gue9505
+  token_endpoint_auth_methods_supported: [none]
+  grant_types_supported: [authorization_code, refresh_token]
+  scopes:
+  - openid
+  - email
+  description: >-
+    Amazon Cognito-backed OAuth. An anonymous request returns HTTP 401 with a
+    spec-conformant challenge — WWW-Authenticate: Bearer realm="Altrata MCP",
+    resource_metadata=".../.well-known/oauth-protected-resource/mcp",
+    scope="openid email".
+  method: probed
+  detail: scopes/wealth-x-scopes.yml
+
+human_access:
+  graphiql: >-
+    The GraphiQL explorers at <service>.altrata.com/v1/graphiql/ accept the
+    service account username and password directly in a sign-in form — no token
+    exchange needed for interactive use.
+  source: https://docs.altrata.com/service-user-credentials
+
+gaps:
+- No self-serve signup, trial, or public sandbox credential on any surface.
+- No openid-configuration document is served, despite the `openid` scope.
+- The legacy REST API transmits an account password as a plain request header on every call.

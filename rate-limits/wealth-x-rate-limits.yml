@@ -1,0 +1,96 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.altrata.com/errors-warnings-and-limits
+description: >-
+  Published rate limits. The legacy Wealth-X Connect REST API
+  (connect.wealthx.com) publishes no limits anywhere in its documentation or
+  Postman collection. Its successor — the unified Altrata GraphQL platform,
+  which docs.altrata.com/altrata-migration names as the migration target for
+  Wealth-X customers — publishes per-service rate and burst limits, which are
+  recorded here.
+limit_count: 5
+limits:
+  - scope: per-service (Altrata Profile API)
+    surface: https://profile.altrata.com/v1/graphql/
+    window: 1s
+    limit: 2
+    burst: 2
+    unit: requests
+    source: https://docs.altrata.com/errors-warnings-and-limits
+  - scope: per-service (Altrata Events API)
+    surface: https://events.altrata.com/v1/graphql
+    window: 1s
+    limit: 2
+    burst: 2
+    unit: requests
+    source: https://docs.altrata.com/errors-warnings-and-limits
+  - scope: per-service (Altrata Matching API)
+    surface: https://matching.altrata.com/v1/graphql
+    window: 1s
+    limit: 100
+    burst: 50
+    unit: requests
+    source: https://docs.altrata.com/errors-warnings-and-limits
+  - scope: per-service (Altrata Relationship API)
+    surface: https://relationships.altrata.com/v1/graphql/
+    window: 1s
+    limit: 100
+    burst: 50
+    unit: requests
+    source: https://docs.altrata.com/errors-warnings-and-limits
+  - scope: per-client (Altrata MCP server)
+    surface: https://mcp.altrata.com/mcp
+    window: 60s
+    limit: 500
+    unit: requests
+    method: probed
+    source: >-
+      Observed on a live unauthenticated request to https://mcp.altrata.com/mcp
+      on 2026-08-14 (HTTP 401): RateLimit-Policy "500;w=60",
+      RateLimit-Limit 500, RateLimit-Remaining 499, RateLimit-Reset 60.
+payload_limits:
+  - scope: Altrata Matching API
+    limit: 6MB per HTTP POST request
+    source: https://docs.altrata.com/api
+response_headers:
+  documented: []
+  observed:
+    - header: RateLimit-Policy
+      example: 500;w=60
+      surface: https://mcp.altrata.com/mcp
+      note: >-
+        IETF draft RateLimit header field. Observed on the MCP endpoint only;
+        the GraphQL services return 401/403 anonymously and their headers could
+        not be observed.
+    - header: RateLimit-Limit
+      example: '500'
+      surface: https://mcp.altrata.com/mcp
+    - header: RateLimit-Remaining
+      example: '499'
+      surface: https://mcp.altrata.com/mcp
+    - header: RateLimit-Reset
+      example: '60'
+      surface: https://mcp.altrata.com/mcp
+  note: >-
+    Altrata's docs do not document any X-RateLimit-* / RateLimit-* response
+    headers or a Retry-After header for the GraphQL APIs. The only runtime
+    rate-limit signal we could observe anonymously is on the MCP endpoint.
+exhaustion:
+  - status: 429
+    condition: Too Many Requests — the per-second rate limit has been exceeded.
+    remediation: >-
+      Retry with an exponential backoff algorithm with jitter, then resubmit.
+      (Verbatim guidance from docs.altrata.com/errors-warnings-and-limits.)
+  - status: 429
+    condition: Limit Exceeded — the daily quota has been exceeded.
+    remediation: >-
+      Daily quota is set by subscription entitlement; contact the Altrata
+      account representative. The quota value itself is not published.
+legacy_surface:
+  api: Wealth-X Connect REST API
+  base_url: https://connect.wealthx.com/rest/v1
+  limits_documented: false
+  note: >-
+    No rate limits, burst allowances, quota values or 429 semantics are
+    documented for the legacy Wealth-X Connect API in either
+    developers.wealthx.com/api/main.html or the published Postman collection.
