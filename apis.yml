@@ -41,6 +41,19 @@ tags:
 - Data
 - UHNW
 - Prospecting
+- Financial-Services
+- CRM
+- People Data
+- Altrata
+- GraphQL
+- MCP
+- Wealth Screening
+tags_raw:
+- Company
+- Wealth Intelligence
+- Data
+- UHNW
+- Prospecting
 - Financial Services
 - CRM
 - People Data
@@ -156,6 +169,10 @@ apis:
   humanURL: https://docs.altrata.com/events-api
   baseURL: https://events.altrata.com/v1/graphql
   tags:
+  - GraphQL
+  - Event
+  - Announcements
+  tags_raw:
   - GraphQL
   - Events
   - Announcements
