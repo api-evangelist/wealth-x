@@ -1,0 +1,14 @@
+{
+  "repo": "wealth-x",
+  "feeds": [
+    {
+      "source": "https://app.altrata.com/login",
+      "feed_url": "https://app.altrata.com/login",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-22T20:20:02Z"
+}
