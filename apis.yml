@@ -227,6 +227,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Website
+  url: https://www.wealthx.com/
 - type: Overlay
   url: overlays/wealth-x-connect-overlay.yaml
 - type: DeveloperPortal
