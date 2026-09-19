@@ -161,6 +161,10 @@ apis:
   tags:
   - GraphQL
   - Relationships
+  - Networks
+  tags_raw:
+  - GraphQL
+  - Relationships
   - Network
   properties:
   - type: Documentation
