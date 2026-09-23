@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Wealth-X Connect Dossiers Search API
+  title: Wealth-X Connect Search API
   version: v1
-  description: The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform. It exposes single- and bulk-dossier retrieval, an advanced dossier search (by name, company, geography, net worth, industry, interests, education, philanthropy and relationships) and reference-data lookups (countries, states, industry types, positions). This specification was generated faithfully from the provider's published Postman collection; endpoints, parameters and the authentication model are taken verbatim from that collection. No response schemas are published by the provider, so response bodies are described generically.
+  description: The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform.
   contact:
     name: Wealth-X Developer Support
     url: https://developers.wealthx.com/api/main.html
@@ -47,6 +47,22 @@ paths:
           description: Missing or invalid authentication headers.
 components:
   schemas:
+    Dossier:
+      type: object
+      description: A Wealth-X wealth-intelligence record on an individual or privately held company. Field set varies by view and subscription; only fields observed in the published collection are named here.
+      properties:
+        dossierId:
+          type: integer
+        dossierType:
+          type: string
+          description: person or company.
+        netWorth:
+          type: number
+        knownAssociates:
+          type: array
+          items:
+            type: object
+      additionalProperties: true
     DossierSearchRequest:
       type: object
       description: Advanced search criteria for the Wealth-X database.
@@ -100,22 +116,6 @@ components:
           - desc
         idOnly:
           type: boolean
-      additionalProperties: true
-    Dossier:
-      type: object
-      description: A Wealth-X wealth-intelligence record on an individual or privately held company. Field set varies by view and subscription; only fields observed in the published collection are named here.
-      properties:
-        dossierId:
-          type: integer
-        dossierType:
-          type: string
-          description: person or company.
-        netWorth:
-          type: number
-        knownAssociates:
-          type: array
-          items:
-            type: object
       additionalProperties: true
   securitySchemes:
     wealthxUsername:

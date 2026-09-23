@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Wealth-X Connect Dossiers Reference API
+  title: Wealth-X Connect Reference API
   version: v1
-  description: The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform. It exposes single- and bulk-dossier retrieval, an advanced dossier search (by name, company, geography, net worth, industry, interests, education, philanthropy and relationships) and reference-data lookups (countries, states, industry types, positions). This specification was generated faithfully from the provider's published Postman collection; endpoints, parameters and the authentication model are taken verbatim from that collection. No response schemas are published by the provider, so response bodies are described generically.
+  description: The Wealth-X Connect API delivers Wealth-X wealth-intelligence data — curated dossiers on ultra-high-net-worth (UHNW) and very-high-net-worth (VHNW) individuals and their privately held companies — directly into a subscriber's CRM or data platform.
   contact:
     name: Wealth-X Developer Support
     url: https://developers.wealthx.com/api/main.html
