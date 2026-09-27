@@ -53,7 +53,7 @@ tags:
 - Data
 - UHNW
 - Prospecting
-- Financial-Services
+- Financial Services
 - CRM
 - People Data
 - Altrata
@@ -73,6 +73,7 @@ tags_raw:
 - GraphQL
 - MCP
 - Wealth Screening
+- Financial-Services
 apis:
 - aid: wealth-x:wealth-x-dossiers-api
   name: Wealth-X Dossiers API
