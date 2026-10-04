@@ -47,6 +47,22 @@ paths:
           description: Missing or invalid authentication headers.
 components:
   schemas:
+    Dossier:
+      type: object
+      description: A Wealth-X wealth-intelligence record on an individual or privately held company. Field set varies by view and subscription; only fields observed in the published collection are named here.
+      properties:
+        dossierId:
+          type: integer
+        dossierType:
+          type: string
+          description: person or company.
+        netWorth:
+          type: number
+        knownAssociates:
+          type: array
+          items:
+            type: object
+      additionalProperties: true
     DossierSearchRequest:
       type: object
       description: Advanced search criteria for the Wealth-X database.
@@ -100,22 +116,6 @@ components:
           - desc
         idOnly:
           type: boolean
-      additionalProperties: true
-    Dossier:
-      type: object
-      description: A Wealth-X wealth-intelligence record on an individual or privately held company. Field set varies by view and subscription; only fields observed in the published collection are named here.
-      properties:
-        dossierId:
-          type: integer
-        dossierType:
-          type: string
-          description: person or company.
-        netWorth:
-          type: number
-        knownAssociates:
-          type: array
-          items:
-            type: object
       additionalProperties: true
   securitySchemes:
     wealthxUsername:
