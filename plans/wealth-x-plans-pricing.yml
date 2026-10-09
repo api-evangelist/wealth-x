@@ -100,3 +100,39 @@ evidence:
     note: Product page; no pricing, CTA is "Request a Demo".
   - url: https://docs.altrata.com/data-packages-and-subscription-entitlements
     status: 200
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Account
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Buyer
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Investor
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Donor
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Exec
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
